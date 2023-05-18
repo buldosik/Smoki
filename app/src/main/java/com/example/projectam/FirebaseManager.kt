@@ -1,12 +1,8 @@
 package com.example.projectam
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
-import com.example.projectam.activities.ConnectActivity
-import com.example.projectam.activities.LobbyActivity
 import com.example.projectam.utils.Game
 import com.example.projectam.utils.Player
 import com.google.firebase.database.*
@@ -22,7 +18,7 @@ class FirebaseManager {
             // Get Connection to Firebase database
             database = Firebase.database
         }
-
+        // Connect/Create Activity
         fun createNewLobby(code: String, player: Player) {
             val game = Game(code = code)
             // Add host player
@@ -59,12 +55,43 @@ class FirebaseManager {
             database.getReference(code).addListenerForSingleValueEvent(postListener)
         }
 
-        fun getData(code: String) {
+        // Lobby Activity
+        lateinit var postListener: ValueEventListener
+        fun initLobbyUpdaterListener(code: String, updateAdapter: (players: MutableList<Player>) -> Unit, context: Context) {
+            postListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val post = snapshot.getValue<Game>()
+                    // Check is there is a lobby with that code
+                    if (post == null) {
+                        Toast.makeText(
+                            context,
+                            "There is no lobby with that code",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return
+                    }
+                    Log.d("FIREBASE_MANAGER", "Call updateAdapter")
+                    // Call updateAdapter
+                    updateAdapter(post.players)
+                }
 
+                override fun onCancelled(error: DatabaseError) {
+                    // Fail to connect / check
+                    Toast.makeText(context, "Fail to connect", Toast.LENGTH_SHORT).show()
+                    Log.w("FIREBASE_MANAGER", "loadPost:onCancelled", error.toException())
+                }
+            }
+        }
+        fun addLobbyUpdater(code: String) {
+            database.getReference(code).addValueEventListener(postListener)
+        }
+        fun deleteLobbyUpdater(code: String) {
+            database.getReference(code).removeEventListener(postListener)
         }
 
-        fun getPlayers(code: String) : MutableList<Player> {
-            return mutableListOf()
+        // Game Activity
+        fun getData(code: String) {
+
         }
     }
 }

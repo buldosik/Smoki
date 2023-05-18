@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectam.ClientInfo
 import com.example.projectam.FirebaseManager
@@ -18,8 +19,7 @@ class ConnectActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.connect_activity)
-
-        username = intent.getStringExtra("username").toString()
+        username = ClientInfo.username
         romeCodeET = findViewById(R.id.roomCodeET)
     }
 
@@ -32,8 +32,11 @@ class ConnectActivity : AppCompatActivity() {
     }
 
     fun createLobby(view: View) {
-        if(!isValidCode())
+        if(!isValidCode()) {
+            Toast.makeText(this, "Code contains specific characters", Toast.LENGTH_SHORT).show()
             return
+        }
+
 
         // Call to create lobby at firebase
         FirebaseManager.createNewLobby(romeCodeET.text.toString(), Player(username = username, isConnected = true))
@@ -46,10 +49,8 @@ class ConnectActivity : AppCompatActivity() {
         startActivity(Intent(this, LobbyActivity::class.java))
     }
 
-    //ToDo add checks for shit symbols
     private fun isValidCode() : Boolean {
-        if(romeCodeET.text.length <= 3)
-            return false
-        return true
+        val code = romeCodeET.text
+        return code.all{ it.isLetter() || it.isDigit() } && code.length in 3..6
     }
 }
