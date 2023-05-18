@@ -36,7 +36,7 @@
         android:id="@+id/connect"
         android:layout_width="145dp"
         android:layout_height="78dp"
-        android:onClick="connectToLobby"
+        android:onClick="attemptToConnectToLobby"
         android:text="Connect"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

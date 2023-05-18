@@ -23,11 +23,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun play(view: View) {
-        //ToDo add checks for shit symbols
-        if(usernameET.text.length <= 4)
+        if(!isValidName())
             return
         val intent = Intent(this, ConnectActivity::class.java)
-        intent.putExtra("username", usernameET.text)
+        intent.putExtra("username", usernameET.text.toString())
         startActivity(intent)
+    }
+
+    //ToDo add checks for shit symbols
+    private fun isValidName(): Boolean {
+        if(usernameET.text.length <= 4)
+            return false
+        return true
     }
 }

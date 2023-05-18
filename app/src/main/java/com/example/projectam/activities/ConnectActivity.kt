@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.example.projectam.ClientInfo
 import com.example.projectam.FirebaseManager
 import com.example.projectam.R
 import com.example.projectam.utils.Player
@@ -22,24 +23,33 @@ class ConnectActivity : AppCompatActivity() {
         romeCodeET = findViewById(R.id.roomCodeET)
     }
 
-    fun connectToLobby(view: View) {
-        //ToDo add checks for shit symbols
-        if(romeCodeET.text.length <= 3)
+    fun attemptToConnectToLobby(view: View) {
+        if(!isValidCode())
             return
-        startActivity(Intent(this, LobbyActivity::class.java))
+
+        // Attempt to add new player to lobby
+        FirebaseManager.connectToLobby(romeCodeET.text.toString(), Player(username = username, isConnected = true), this, connectToLobbyActivity)
     }
 
     fun createLobby(view: View) {
-        //ToDo add checks for shit symbols
-        if(romeCodeET.text.length <= 3)
+        if(!isValidCode())
             return
 
-        // Call creating of game at firebase
-        FirebaseManager.createNewLobby(romeCodeET.text.toString(), username)
+        // Call to create lobby at firebase
+        FirebaseManager.createNewLobby(romeCodeET.text.toString(), Player(username = username, isConnected = true))
 
-        // Sending to next activity user id
-        val intent = Intent(this, ConnectActivity::class.java)
-        intent.putExtra("host_id", "0")
-        startActivity(intent)
+        connectToLobbyActivity()
+    }
+
+    private val connectToLobbyActivity = fun() {
+        ClientInfo.init(romeCodeET.text.toString(), username)
+        startActivity(Intent(this, LobbyActivity::class.java))
+    }
+
+    //ToDo add checks for shit symbols
+    private fun isValidCode() : Boolean {
+        if(romeCodeET.text.length <= 3)
+            return false
+        return true
     }
 }

@@ -1,5 +1,7 @@
 package com.example.projectam.utils
 
+import com.example.projectam.ClientInfo
+
 data class Game (
     var code: String = "",
     var players: MutableList<Player> = mutableListOf(),
@@ -10,7 +12,14 @@ data class Game (
     var playerTurn: Int = 0
         ) {
     fun addPlayer(player: Player) {
-        //ToDo add a player with some id, correspond to an empty slots
+        var id = 0
+        while(id < players.size) {
+            id++
+        }
+        // Set for client id
+        ClientInfo.id = id
+        // Set for server id
+        player.id = id
         players.add(player)
     }
 
