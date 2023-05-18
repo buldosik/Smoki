@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "759337458476",
+    "firebase_url": "https://dragons-e90e5-default-rtdb.firebaseio.com",
+    "project_id": "dragons-e90e5",
+    "storage_bucket": "dragons-e90e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759337458476:android:5a0dd052011de8513dea89",
+        "android_client_info": {
+          "package_name": "com.example.projectam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "759337458476-iks6ijrn8t7vi7cvbc7fikf8ebdksprq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.projectam",
+            "certificate_hash": "5ddc84c613b91d7695a17e8a0b37550c1ccaa721"
+          }
+        },
+        {
+          "client_id": "759337458476-anpodkajbreqeartfhi6cihdittt3ogi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqedrb4szifXu2ztfIxFuUkHeEaVRWllc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "759337458476-anpodkajbreqeartfhi6cihdittt3ogi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
