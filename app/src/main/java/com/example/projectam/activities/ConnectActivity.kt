@@ -3,20 +3,53 @@ package com.example.projectam.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.example.projectam.ClientInfo
+import com.example.projectam.FirebaseManager
 import com.example.projectam.R
+import com.example.projectam.utils.Player
 
 class ConnectActivity : AppCompatActivity() {
+    private lateinit var romeCodeET: EditText
+
+    private lateinit var username: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.connect_activity)
+
+        username = intent.getStringExtra("username").toString()
+        romeCodeET = findViewById(R.id.roomCodeET)
     }
 
-    fun connectToLobby(view: View) {
-        startActivity(Intent(this, LobbyActivity::class.java))
+    fun attemptToConnectToLobby(view: View) {
+        if(!isValidCode())
+            return
+
+        // Attempt to add new player to lobby
+        FirebaseManager.connectToLobby(romeCodeET.text.toString(), Player(username = username, isConnected = true), this, connectToLobbyActivity)
     }
 
     fun createLobby(view: View) {
+        if(!isValidCode())
+            return
+
+        // Call to create lobby at firebase
+        FirebaseManager.createNewLobby(romeCodeET.text.toString(), Player(username = username, isConnected = true))
+
+        connectToLobbyActivity()
+    }
+
+    private val connectToLobbyActivity = fun() {
+        ClientInfo.init(romeCodeET.text.toString(), username)
         startActivity(Intent(this, LobbyActivity::class.java))
+    }
+
+    //ToDo add checks for shit symbols
+    private fun isValidCode() : Boolean {
+        if(romeCodeET.text.length <= 3)
+            return false
+        return true
     }
 }

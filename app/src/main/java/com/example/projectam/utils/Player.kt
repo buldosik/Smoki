@@ -1,5 +1,8 @@
 package com.example.projectam.utils
 
-class Player(name: String) {
-
-}
+data class Player (
+    var id: Int = 0,
+    var username: String = "",
+    var isConnected: Boolean = false,
+    var fields: MutableList<Card> = mutableListOf()
+        )

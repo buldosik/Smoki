@@ -11,9 +11,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectAM"
         tools:targetApi="31">
-        <activity android:name=".activities.ConnectActivity" />
+        <activity
+            android:name=".activities.ConnectActivity"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity
+            android:name=".activities.LobbyActivity"
+            android:screenOrientation="landscape">
+        </activity>
         <activity
             android:name=".activities.MainActivity"
+            android:screenOrientation="landscape"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
