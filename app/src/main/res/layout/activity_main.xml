@@ -39,7 +39,7 @@
         android:background="@color/black"
         android:backgroundTint="#000000"
         android:onClick="play"
-        android:text="Button"
+        android:text="Play"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

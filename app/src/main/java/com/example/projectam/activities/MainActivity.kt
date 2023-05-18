@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import com.example.projectam.ClientInfo
 import com.example.projectam.FirebaseManager
 import com.example.projectam.R
 
@@ -25,9 +26,8 @@ class MainActivity : AppCompatActivity() {
     fun play(view: View) {
         if(!isValidName())
             return
-        val intent = Intent(this, ConnectActivity::class.java)
-        intent.putExtra("username", usernameET.text.toString())
-        startActivity(intent)
+        ClientInfo.username = usernameET.text.toString()
+        startActivity(Intent(this, ConnectActivity::class.java))
     }
 
     //ToDo add checks for shit symbols
