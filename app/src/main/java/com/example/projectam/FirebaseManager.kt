@@ -56,9 +56,9 @@ class FirebaseManager {
         }
 
         // Lobby Activity
-        lateinit var postListener: ValueEventListener
+        lateinit var postListenerLobby: ValueEventListener
         fun initLobbyUpdaterListener(code: String, updateAdapter: (players: MutableList<Player>) -> Unit, context: Context) {
-            postListener = object : ValueEventListener {
+            postListenerLobby = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val post = snapshot.getValue<Game>()
                     // Check is there is a lobby with that code
@@ -83,15 +83,44 @@ class FirebaseManager {
             }
         }
         fun addLobbyUpdater(code: String) {
-            database.getReference(code).addValueEventListener(postListener)
+            database.getReference(code).addValueEventListener(postListenerLobby)
         }
         fun deleteLobbyUpdater(code: String) {
-            database.getReference(code).removeEventListener(postListener)
+            database.getReference(code).removeEventListener(postListenerLobby)
         }
 
         // Game Activity
-        fun getData(code: String) {
+        lateinit var postListenerGame: ValueEventListener
+        fun initGameUpdaterListener(code: String, updateAdapter: (game: Game) -> Unit, context: Context) {
+            postListenerGame = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val post = snapshot.getValue<Game>()
+                    // Check is there is a lobby with that code
+                    if (post == null) {
+                        Toast.makeText(
+                            context,
+                            "There is no lobby with that code",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return
+                    }
+                    Log.d("FIREBASE_MANAGER", "Call updateAdapter")
+                    // Call updateAdapter
+                    updateAdapter(post)
+                }
 
+                override fun onCancelled(error: DatabaseError) {
+                    // Fail to connect / check
+                    Toast.makeText(context, "Fail to connect", Toast.LENGTH_SHORT).show()
+                    Log.w("FIREBASE_MANAGER", "loadPost:onCancelled", error.toException())
+                }
+            }
+        }
+        fun addGameUpdater(code: String) {
+            database.getReference(code).addValueEventListener(postListenerGame)
+        }
+        fun deleteGameUpdater(code: String) {
+            database.getReference(code).removeEventListener(postListenerGame)
         }
     }
 }
