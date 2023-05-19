@@ -1,6 +1,8 @@
 package com.example.projectam.activities
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
@@ -55,6 +57,12 @@ class GameActivity : AppCompatActivity() {
         views.add(findViewById(R.id.player4))
         views.add(findViewById(R.id.player5))
 
+        names.add(findViewById(R.id.namePlayer1))
+        names.add(findViewById(R.id.namePlayer2))
+        names.add(findViewById(R.id.namePlayer3))
+        names.add(findViewById(R.id.namePlayer4))
+        names.add(findViewById(R.id.namePlayer5))
+
         for (view: RecyclerView in views) {
             view.layoutManager = GridLayoutManager(this, 3)
         }
@@ -64,9 +72,18 @@ class GameActivity : AppCompatActivity() {
         stir2IV = findViewById(R.id.stir2)
     }
 
-    private val updateAdapters = fun(game: Game) {
+    private val updateAdapters = @SuppressLint("SetTextI18n")
+    fun(game: Game) {
+        for (i in 0 until 5) {
+            views[i].visibility = View.VISIBLE
+        }
         for (i in 0 until game.players.size) {
             views[i].adapter = GameAdapter(this, game.players[i].fields)
+            names[i].text = game.players[i].username
+        }
+        for (i in game.players.size until 5) {
+            names[i].text = "Empty"
+            views[i].visibility = View.INVISIBLE
         }
     }
 }
