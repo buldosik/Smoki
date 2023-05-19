@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -26,11 +28,12 @@ class LobbyActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.lobby_activity)
-        // ToDo Init all widgets
         recyclerView = findViewById(R.id.lobbyView)
         recyclerView.layoutManager = GridLayoutManager(this, 1)
-        recyclerView.adapter = LobbyAdapter(this, mutableListOf(Player(ClientInfo.id, ClientInfo.username, true)))
+        updateAdapter(mutableListOf(Player(ClientInfo.id, ClientInfo.username, true)))
         gameCode = findViewById(R.id.gameCodeTV)
         gameCode.text = "Code: " + ClientInfo.gameCode
         startButton = findViewById(R.id.start)
