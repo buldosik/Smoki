@@ -18,7 +18,7 @@ class FirebaseManager {
             // Get Connection to Firebase database
             database = Firebase.database
         }
-        // Connect/Create Activity
+        // region Connect/Create Activity
         fun createNewLobby(code: String, player: Player) {
             val game = Game(code = code)
             // Add host player
@@ -54,8 +54,9 @@ class FirebaseManager {
             }
             database.getReference(code).addListenerForSingleValueEvent(postListener)
         }
+        // endregion
 
-        // Lobby Activity
+        // region Lobby Activity
         lateinit var postListenerLobby: ValueEventListener
         fun initLobbyUpdaterListener(code: String, updateAdapter: (players: MutableList<Player>) -> Unit, context: Context) {
             postListenerLobby = object : ValueEventListener {
@@ -88,8 +89,9 @@ class FirebaseManager {
         fun deleteLobbyUpdater(code: String) {
             database.getReference(code).removeEventListener(postListenerLobby)
         }
+        // endregion
 
-        // Game Activity
+        // region Game Activity
         lateinit var postListenerGame: ValueEventListener
         fun initGameUpdaterListener(code: String, updateAdapter: (game: Game) -> Unit, context: Context) {
             postListenerGame = object : ValueEventListener {
@@ -122,5 +124,13 @@ class FirebaseManager {
         fun deleteGameUpdater(code: String) {
             database.getReference(code).removeEventListener(postListenerGame)
         }
+        // endregion
+
+        // region Additional functions
+        fun deleteUser(code: String, id: Int) {
+            database.getReference("$code/players/$id").removeValue()
+            //database.getReference(code).child("players").child(id.toString()).removeValue()
+        }
+        // endregion
     }
 }

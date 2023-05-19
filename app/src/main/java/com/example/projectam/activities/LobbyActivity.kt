@@ -58,7 +58,6 @@ class LobbyActivity : AppCompatActivity() {
     }
 
     private val updateAdapter = fun(players: MutableList<Player>) {
-        // ToDo write update adapter
         recyclerView.adapter = LobbyAdapter(this, players)
     }
 
@@ -67,6 +66,7 @@ class LobbyActivity : AppCompatActivity() {
     }
 
     fun leaveLobby(view: View) {
+        FirebaseManager.deleteUser(ClientInfo.gameCode, ClientInfo.id)
         startActivity(Intent(this, ConnectActivity::class.java))
     }
 }
