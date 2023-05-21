@@ -20,11 +20,11 @@
             android:screenOrientation="landscape">
         </activity>
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.GameActivity"
             android:screenOrientation="landscape">
         </activity>
         <activity
-            android:name=".activities.GameActivity"
+            android:name=".activities.MainActivity"
             android:screenOrientation="landscape"
             android:exported="true">
             <intent-filter>

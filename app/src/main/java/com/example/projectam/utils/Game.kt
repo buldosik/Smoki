@@ -67,11 +67,15 @@ data class Game (
         return card
     }
     fun getCardFromStir1(): Card {
+        if(stirDeck1.isEmpty())
+            return Card(0,true)
         val card = stirDeck1[stirDeck1.size - 1]
         stirDeck1.removeAt(stirDeck1.size - 1)
         return card
     }
     fun getCardFromStir2(): Card {
+        if(stirDeck2.isEmpty())
+            return Card(0,true)
         val card = stirDeck2[stirDeck2.size - 1]
         stirDeck2.removeAt(stirDeck2.size - 1)
         return card

@@ -42,22 +42,22 @@ class GameActivity : AppCompatActivity(), OnItemListener {
 
         initViews()
         updateAdapters(Game())
-//        createListener()
+        createListener()
     }
 
-//    private fun createListener() {
-//        FirebaseManager.initGameUpdaterListener(ClientInfo.gameCode, updateAdapters, this)
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        FirebaseManager.addGameUpdater(ClientInfo.gameCode)
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        FirebaseManager.deleteGameUpdater(ClientInfo.gameCode)
-//    }
+    private fun createListener() {
+        FirebaseManager.initGameUpdaterListener(ClientInfo.gameCode, updateAdapters, this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseManager.addGameUpdater(ClientInfo.gameCode)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        FirebaseManager.deleteGameUpdater(ClientInfo.gameCode)
+    }
 
     private fun initViews() {
         views.add(findViewById(R.id.player1))
@@ -136,14 +136,14 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     deckIV.setBackgroundResource(R.drawable.image_disable_border)
 
                     chosenDeck = false
-                    myGame.addToStir1(chosenCard)
+                    myGame.addToStir2(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (chosenToStir) {
                     chosenToStir = false
                     stir2IV.setImageResource(chosenCard.getImage())
 
-                    myGame.addToStir1(chosenCard)
+                    myGame.addToStir2(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else {
@@ -151,7 +151,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                         Toast.makeText(this, "Stir has no cards", Toast.LENGTH_SHORT).show()
                     } else {
                         view.setBackgroundResource(R.drawable.image_border)
-                        chosenCard = myGame.getCardFromStir1()
+                        chosenCard = myGame.getCardFromStir2()
 
                         if (myGame.stirDeck2.isNotEmpty()){
                             stir2IV.setImageResource(myGame.stirDeck2[myGame.stirDeck2.size - 1].getImage())
