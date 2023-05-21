@@ -166,12 +166,11 @@ class FirebaseManager {
                     }
                     //  Game start
                     game.createNewDeck()
-                    game.shuffle()
-                    game.stirDeck1.add(game.getCardFromDeck(true))
-                    game.stirDeck2.add(game.getCardFromDeck(true))
+                    game.stirDeck1.add(game.getCardFromCardDeck(true))
+                    game.stirDeck2.add(game.getCardFromCardDeck(true))
                     for(j in 1..6) {
                         for(i in game.players) {
-                            i.fields.add(game.getCardFromDeck(false))
+                            i.fields.add(game.getCardFromCardDeck())
                         }
                     }
                     database.getReference(code).setValue(game)
