@@ -1,11 +1,31 @@
 package com.example.projectam.utils
 
+import com.example.projectam.R
+
 data class Card(
     var value: Int,
     var isRevealed: Boolean
 ) {
-    fun getImage() {
-        //ToDo return some image by value
+    fun getImage(): Int {
+        return if (isRevealed) {
+            when (value) {
+                -2 -> return R.drawable.minus_two
+                0 -> return R.drawable.zero
+                1 -> return R.drawable.one
+                2 -> return R.drawable.two
+                3 -> return R.drawable.three
+                4 -> return R.drawable.four
+                5 -> return R.drawable.five
+                6 -> return R.drawable.six
+                7 -> return R.drawable.seven
+                8 -> return R.drawable.eight
+                9 -> return R.drawable.nine
+                10 -> return R.drawable.ten
+                else -> R.drawable.close_image_vert
+            }
+        } else {
+            return R.drawable.close_image_vert
+        }
     }
 
     fun reveal() {

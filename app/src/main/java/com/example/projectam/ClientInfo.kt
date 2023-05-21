@@ -7,7 +7,7 @@ class ClientInfo {
         var username: String = ""
         var id: Int = -1
         var gameCode: String = ""
-        lateinit var game: Game
+        var isStarted: Boolean = true
 
         fun init(code: String, name: String) {
             username = name

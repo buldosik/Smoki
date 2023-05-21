@@ -9,7 +9,7 @@ import com.example.projectam.R
 class GameAdapter (
     private val context: Context,
     private val cards: MutableList <Card>,
-    val listener: OnItemListener
+    private val listener: OnItemListener?
         ) : RecyclerView.Adapter<GameViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -23,7 +23,9 @@ class GameAdapter (
 
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         holder.bindView(cards[position])
-        holder.imageView.setOnClickListener{ listener.onItemClick(position) }
+        if (listener != null) {
+            holder.imageView.setOnClickListener{ listener.onItemClick(position) }
+        }
     }
 }
 

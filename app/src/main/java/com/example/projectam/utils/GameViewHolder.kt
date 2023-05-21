@@ -16,9 +16,9 @@ class GameViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
     @SuppressLint("SetTextI18n")
     fun bindView(card: Card) {
         if (card.isRevealed) {
-            // ToDo set to imageView image corresponding to value
+            card.getImage()
         } else {
-            // ToDo set to imageView closed card
+            imageView.setImageResource(R.drawable.close_image_vert)
         }
     }
 }

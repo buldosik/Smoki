@@ -189,6 +189,11 @@ class FirebaseManager {
             // Set game at firebase
             database.getReference(code).setValue(game)
         }
+
+        fun sendPlayerToServer(code: String, player: Player) {
+            // Set game at firebase
+            database.getReference("$code/players/${player.id}").setValue(player)
+        }
         // endregion
     }
 }

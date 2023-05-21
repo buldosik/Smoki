@@ -26,29 +26,74 @@ data class Game (
     }
 
     fun createNewDeck() {
-        // ToDo add all cards to cardDeck
+        val cardsValues = listOf(-2, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 10, -1)
+        //add cards
+        for (i in cardsValues) {
+            repeat(4) {
+                val card = Card(i, false)
+                cardDeck.add(card)
+            }
+        }
+        shuffle(cardDeck)
     }
     private fun shuffle(deck: MutableList<Card>) {
-        // ToDo shuffle deck
+        deck.shuffle()
     }
-
+    //leaves top cards in stirs decks. All the other cards go in cardDeck
     private fun stirReset() {
-        // ToDo leaves top cards in stir decks. All the other cards go in cardDeck
+        val card1 = stirDeck1[stirDeck1.size - 1]
+        stirDeck1.removeAt(stirDeck1.size - 1)
+        val card2 = stirDeck2[stirDeck2.size - 1]
+        stirDeck2.removeAt(stirDeck2.size - 1)
+        val stir = mutableListOf<Card>()
+        stir.addAll(stirDeck1)
+        stir.addAll(stirDeck2)
+        shuffle(stir)
+        stirDeck1.clear()
+        stirDeck1.add(card1)
+        stirDeck2.clear()
+        stirDeck2.add(card2)
+        stir.addAll(cardDeck)
+        cardDeck.clear()
+        cardDeck.addAll(stir)
     }
     fun getCardFromCardDeck(isRevealed: Boolean = false): Card {
-        // ToDo Return top card from cardDeck
-        return Card(0, true)
+        if(cardDeck.isEmpty())
+            stirReset()
+        val card = cardDeck[cardDeck.size - 1]
+        cardDeck.removeAt(cardDeck.size - 1)
+        if(isRevealed)
+            card.reveal()
+        return card
     }
     fun getCardFromStir1(): Card {
-        // ToDo Return top card from stir1
-        return Card(0,true)
+        val card = stirDeck1[stirDeck1.size - 1]
+        stirDeck1.removeAt(stirDeck1.size - 1)
+        return card
     }
     fun getCardFromStir2(): Card {
-        // ToDo Return top card from stir2
-        return Card(0,true)
+        val card = stirDeck2[stirDeck2.size - 1]
+        stirDeck2.removeAt(stirDeck2.size - 1)
+        return card
+    }
+
+    fun addToStir1(card: Card) {
+        stirDeck1.add(card)
+    }
+
+    fun addToStir2(card: Card) {
+        stirDeck2.add(card)
     }
 
     fun changePlayerTurn() {
         playerTurn = (playerTurn + 1) % players.size
+    }
+
+    fun checkIsFirstAction() {
+        isStarted = players.any { player ->
+            player.fields.all { card ->
+                !card.isRevealed
+            }
+        }
     }
 }
