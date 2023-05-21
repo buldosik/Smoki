@@ -49,6 +49,14 @@ data class Game (
     }
 
     fun changePlayerTurn() {
-        playerTurn = (playerTurn + 1) % players.size
+        for(i in 0 until players.size) {
+            if(players[i].id != playerTurn)
+                continue
+            playerTurn = if(i == players.size - 1)
+                players[0].id
+            else
+                players[i + 1].id
+            break
+        }
     }
 }
