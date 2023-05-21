@@ -7,4 +7,8 @@ data class Card(
     fun getImage() {
         //ToDo return some image by value
     }
+
+    fun reveal() {
+        isRevealed = true
+    }
 }

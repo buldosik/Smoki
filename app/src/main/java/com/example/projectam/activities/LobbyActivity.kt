@@ -31,6 +31,7 @@ class LobbyActivity : AppCompatActivity() {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.lobby_activity)
+        // Init all widgets
         recyclerView = findViewById(R.id.lobbyView)
         recyclerView.layoutManager = GridLayoutManager(this, 1)
         updateAdapter(mutableListOf(Player(ClientInfo.id, ClientInfo.username, true)))
@@ -62,6 +63,7 @@ class LobbyActivity : AppCompatActivity() {
     }
 
     fun startGame(view: View) {
+        FirebaseManager.startGame(ClientInfo.gameCode, this)
         startActivity(Intent(this, GameActivity::class.java))
     }
 

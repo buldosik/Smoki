@@ -130,6 +130,64 @@ class FirebaseManager {
         fun deleteUser(code: String, id: Int) {
             database.getReference("$code/players/$id").removeValue()
             //database.getReference(code).child("players").child(id.toString()).removeValue()
+            attemptToDestroyLobby(code)
+        }
+        fun attemptToDestroyLobby(code: String, isIgnoringRules: Boolean = false) {
+            val postListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val players = snapshot.getValue<MutableList<Player>>()
+                    // Check for at least one player
+                    if(players == null || players.isEmpty() || isIgnoringRules) {
+                        Log.d("FIREBASE_MANAGER", "Successfully delete lobby")
+                        database.getReference(code).removeValue()
+                    }
+                    else {
+                        Log.d("FIREBASE_MANAGER", "At least one player in")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Fail to connect / check
+                    Log.d("FIREBASE_MANAGER", "Deleting is cancelled")
+                    Log.w("FIREBASE_MANAGER", "loadPost:onCancelled", error.toException())
+                }
+            }
+            database.getReference("$code/players").addListenerForSingleValueEvent(postListener)
+        }
+
+        fun startGame(code: String, context: Context) {
+            val postListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val game = snapshot.getValue<Game>()
+                    // Check is there is a lobby with that code
+                    if (game == null) {
+                        Toast.makeText(context, "There is no lobby with that code", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+                    //  Game start
+                    game.createNewDeck()
+                    game.stirDeck1.add(game.getCardFromCardDeck(true))
+                    game.stirDeck2.add(game.getCardFromCardDeck(true))
+                    for(j in 1..6) {
+                        for(i in game.players) {
+                            i.fields.add(game.getCardFromCardDeck())
+                        }
+                    }
+                    database.getReference(code).setValue(game)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Fail to connect / check
+                    Toast.makeText(context, "Fail to connect", Toast.LENGTH_SHORT).show()
+                    Log.w("FIREBASE_MANAGER", "loadPost:onCancelled", error.toException())
+                }
+            }
+            database.getReference(code).addListenerForSingleValueEvent(postListener)
+        }
+
+        fun sendGameToServer(code: String, game: Game) {
+            // Set game at firebase
+            database.getReference(code).setValue(game)
         }
         // endregion
     }

@@ -14,6 +14,8 @@ data class Game (
     fun addPlayer(player: Player) {
         var id = 0
         while(id < players.size) {
+            if(id != players[id].id)
+                break
             id++
         }
         // Set for client id
@@ -24,16 +26,26 @@ data class Game (
     }
 
     fun createNewDeck() {
-        //ToDo add all cards to deck
+        // ToDo add all cards to cardDeck
     }
-    fun shuffle() {
-        //ToDo shuffle Deck
+    private fun shuffle(deck: MutableList<Card>) {
+        // ToDo shuffle deck
     }
-    fun stirReset(stir: List<Card>) {
-        //ToDo update current Card
+
+    private fun stirReset() {
+        // ToDo leaves top cards in stir decks. All the other cards go in cardDeck
     }
-    fun getCardFromDeck() {
-        //ToDo return top card
+    fun getCardFromCardDeck(isRevealed: Boolean = false): Card {
+        // ToDo Return top card from cardDeck
+        return Card(0, true)
+    }
+    fun getCardFromStir1(): Card {
+        // ToDo Return top card from stir1
+        return Card(0,true)
+    }
+    fun getCardFromStir2(): Card {
+        // ToDo Return top card from stir2
+        return Card(0,true)
     }
 
     fun changePlayerTurn() {
