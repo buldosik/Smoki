@@ -176,8 +176,6 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                 views[ClientInfo.id].adapter = GameAdapter(this, player.fields, this)
             }
         }
-
-
         for (i in 0 until 5) {
             if (!playersId.contains(i)) {
                 names[i].text = "Empty"

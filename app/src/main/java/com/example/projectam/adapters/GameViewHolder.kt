@@ -15,10 +15,6 @@ class GameViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     @SuppressLint("SetTextI18n")
     fun bindView(card: Card) {
-        if (card.isRevealed) {
-            ImageConverter.getImage(card)
-        } else {
-            imageView.setImageResource(R.drawable.close_image_vert)
-        }
+        imageView.setImageResource(ImageConverter.getImage(card))
     }
 }

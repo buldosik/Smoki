@@ -6,7 +6,7 @@ class ImageConverter {
     companion object {
         fun getImage(card: Card): Int {
             return if (card.isRevealed) {
-                when (card.value) {
+               when (card.value) {
                     -2 -> return R.drawable.minus_two
                     0 -> return R.drawable.zero
                     1 -> return R.drawable.one
