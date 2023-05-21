@@ -14,6 +14,8 @@ data class Game (
     fun addPlayer(player: Player) {
         var id = 0
         while(id < players.size) {
+            if(id != players[id].id)
+                break
             id++
         }
         // Set for client id
@@ -32,8 +34,9 @@ data class Game (
     fun stirReset(stir: List<Card>) {
         //ToDo update current Card
     }
-    fun getCardFromDeck() {
+    fun getCardFromDeck(isRevealed: Boolean) : Card {
         //ToDo return top card
+        return Card(0, isRevealed)
     }
 
     fun changePlayerTurn() {
