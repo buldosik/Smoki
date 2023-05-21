@@ -164,7 +164,17 @@ class FirebaseManager {
                         Toast.makeText(context, "There is no lobby with that code", Toast.LENGTH_SHORT).show()
                         return
                     }
-                    Log.d("FIREBASE_MANAGER", "Successfully added player")
+                    //  Game start
+                    game.createNewDeck()
+                    game.shuffle()
+                    game.stirDeck1.add(game.getCardFromDeck(true))
+                    game.stirDeck2.add(game.getCardFromDeck(true))
+                    for(j in 1..6) {
+                        for(i in game.players) {
+                            i.fields.add(game.getCardFromDeck(false))
+                        }
+                    }
+                    database.getReference(code).setValue(game)
                 }
 
                 override fun onCancelled(error: DatabaseError) {

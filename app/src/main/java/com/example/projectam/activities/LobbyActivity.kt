@@ -59,7 +59,8 @@ class LobbyActivity : AppCompatActivity() {
     }
 
     fun startGame(view: View) {
-        // ToDo write intent to GameActivity
+        FirebaseManager.startGame(ClientInfo.gameCode, this)
+        startActivity(Intent(this, GameActivity::class.java))
     }
 
     fun leaveLobby(view: View) {
