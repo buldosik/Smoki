@@ -130,14 +130,14 @@ class FirebaseManager {
         fun deleteUser(code: String, id: Int) {
             database.getReference("$code/players/$id").removeValue()
             //database.getReference(code).child("players").child(id.toString()).removeValue()
-            tryToDestroyLobby(code)
+            attemptToDestroyLobby(code)
         }
-        private fun tryToDestroyLobby(code: String) {
+        fun attemptToDestroyLobby(code: String, isIgnoringRules: Boolean = false) {
             val postListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val players = snapshot.getValue<MutableList<Player>>()
                     // Check for at least one player
-                    if(players == null || players.isEmpty()) {
+                    if(players == null || players.isEmpty() || isIgnoringRules) {
                         Log.d("FIREBASE_MANAGER", "Successfully delete lobby")
                         database.getReference(code).removeValue()
                     }
@@ -183,6 +183,11 @@ class FirebaseManager {
                 }
             }
             database.getReference(code).addListenerForSingleValueEvent(postListener)
+        }
+
+        fun sendGameToServer(code: String, game: Game) {
+            // Set game at firebase
+            database.getReference(code).setValue(game)
         }
         // endregion
     }
