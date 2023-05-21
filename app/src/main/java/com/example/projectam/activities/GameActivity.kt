@@ -38,7 +38,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         setContentView(R.layout.game_activity)
 
         initViews()
-        updateAdapters(Game())
+        updateAdapters(Game(), true)
         createListener()
     }
 
@@ -162,7 +162,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
     }
 
     private val updateAdapters = @SuppressLint("SetTextI18n")
-    fun(game: Game) {
+    fun(game: Game, isInit: Boolean) {
         val playersId: ArrayList<Int> = arrayListOf()
 
         for (i in 0 until 5) {
@@ -183,6 +183,10 @@ class GameActivity : AppCompatActivity(), OnItemListener {
             }
         }
         myGame = game
+        if(!isInit) {
+            stir1IV.setImageResource(ImageConverter.getImage(myGame.stirDeck1[myGame.stirDeck1.size - 1]))
+            stir2IV.setImageResource(ImageConverter.getImage(myGame.stirDeck2[myGame.stirDeck1.size - 1]))
+        }
     }
     override fun onItemClick(position: Int) {
         for (player in myGame.players) {

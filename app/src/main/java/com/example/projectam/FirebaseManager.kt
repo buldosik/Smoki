@@ -95,7 +95,7 @@ class FirebaseManager {
 
         // region Game Activity
         lateinit var postListenerGame: ValueEventListener
-        fun initGameUpdaterListener(code: String, updateAdapter: (game: Game) -> Unit, context: Context) {
+        fun initGameUpdaterListener(code: String, updateAdapter: (game: Game, isInit: Boolean) -> Unit, context: Context) {
             postListenerGame = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val post = snapshot.getValue<Game>()
@@ -110,7 +110,7 @@ class FirebaseManager {
                     }
                     Log.d("FIREBASE_MANAGER", "Call updateAdapter")
                     // Call updateAdapter
-                    updateAdapter(post)
+                    updateAdapter(post, false)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
