@@ -26,17 +26,26 @@ data class Game (
     }
 
     fun createNewDeck() {
-        //ToDo add all cards to deck
+        // ToDo add all cards to cardDeck
     }
-    fun shuffle() {
-        //ToDo shuffle Deck
+    private fun shuffle(deck: MutableList<Card>) {
+        // ToDo shuffle deck
     }
-    fun stirReset(stir: List<Card>) {
-        //ToDo update current Card
+
+    private fun stirReset() {
+        // ToDo leaves top cards in stir decks. All the other cards go in cardDeck
     }
-    fun getCardFromDeck(isRevealed: Boolean) : Card {
-        //ToDo return top card
-        return Card(0, isRevealed)
+    fun getCardFromCardDeck(isRevealed: Boolean = false): Card {
+        // ToDo Return top card from cardDeck
+        return Card(0, true)
+    }
+    fun getCardFromStir1(): Card {
+        // ToDo Return top card from stir1
+        return Card(0,true)
+    }
+    fun getCardFromStir2(): Card {
+        // ToDo Return top card from stir2
+        return Card(0,true)
     }
 
     fun changePlayerTurn() {
