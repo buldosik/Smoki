@@ -59,4 +59,13 @@ data class Game (
             break
         }
     }
+
+    fun checkIsFirstAction() : Boolean {
+        val flag = players.any { player ->
+            player.fields.all { card ->
+                card.isRevealed
+            }
+        }
+        return flag
+    }
 }
