@@ -59,7 +59,7 @@ class FirebaseManager {
 
         // region Lobby Activity
         lateinit var postListenerLobby: ValueEventListener
-        fun initLobbyUpdaterListener(code: String, updateAdapter: (players: MutableList<Player>) -> Unit, context: Context) {
+        fun initLobbyUpdaterListener(code: String, updateAdapter: (game: Game) -> Unit, context: Context) {
             postListenerLobby = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val post = snapshot.getValue<Game>()
@@ -73,8 +73,9 @@ class FirebaseManager {
                         return
                     }
                     Log.d("FIREBASE_MANAGER", "Call updateAdapter")
+
                     // Call updateAdapter
-                    updateAdapter(post.players)
+                    updateAdapter(post)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -166,6 +167,7 @@ class FirebaseManager {
                         return
                     }
                     //  Game start
+                    game.isStarted = true
                     game.createNewDeck()
                     game.stirDeck1.add(CardManager.getCardFromCardDeck(game, true))
                     game.stirDeck2.add(CardManager.getCardFromCardDeck(game, true))

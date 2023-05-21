@@ -15,6 +15,7 @@ import com.example.projectam.ClientInfo
 import com.example.projectam.FirebaseManager
 import com.example.projectam.R
 import com.example.projectam.adapters.LobbyAdapter
+import com.example.projectam.utils.Game
 import com.example.projectam.utils.Player
 
 class LobbyActivity : AppCompatActivity() {
@@ -33,7 +34,7 @@ class LobbyActivity : AppCompatActivity() {
         // Init all widgets
         recyclerView = findViewById(R.id.lobbyView)
         recyclerView.layoutManager = GridLayoutManager(this, 1)
-        updateAdapter(mutableListOf(Player(ClientInfo.id, ClientInfo.username, true)))
+        recyclerView.adapter = LobbyAdapter(this, mutableListOf(Player(ClientInfo.id, ClientInfo.username, true)))
         gameCode = findViewById(R.id.gameCodeTV)
         gameCode.text = "Code: " + ClientInfo.gameCode
         startButton = findViewById(R.id.start)
@@ -57,8 +58,12 @@ class LobbyActivity : AppCompatActivity() {
         FirebaseManager.deleteLobbyUpdater(ClientInfo.gameCode)
     }
 
-    private val updateAdapter = fun(players: MutableList<Player>) {
-        recyclerView.adapter = LobbyAdapter(this, players)
+    private val updateAdapter = fun(game: Game) {
+        if(game.isStarted) {
+            startActivity(Intent(this, GameActivity::class.java))
+            return
+        }
+        recyclerView.adapter = LobbyAdapter(this, game.players)
     }
 
     fun startGame(view: View) {

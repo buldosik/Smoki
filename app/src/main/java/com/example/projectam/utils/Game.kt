@@ -70,12 +70,4 @@ data class Game (
     fun changePlayerTurn() {
         playerTurn = (playerTurn + 1) % players.size
     }
-
-    fun checkIsFirstAction() {
-        isStarted = players.any { player ->
-            player.fields.all { card ->
-                !card.isRevealed
-            }
-        }
-    }
 }
