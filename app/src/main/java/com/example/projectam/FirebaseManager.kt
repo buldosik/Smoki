@@ -185,6 +185,11 @@ class FirebaseManager {
             database.getReference(code).addListenerForSingleValueEvent(postListener)
         }
 
+        fun sendPlayerToServer(code: String, player: Player) {
+            // Set game at firebase
+            database.getReference("$code/players/${player.id}").setValue(player)
+        }
+
         fun sendGameToServer(code: String, game: Game) {
             // Set game at firebase
             database.getReference(code).setValue(game)
