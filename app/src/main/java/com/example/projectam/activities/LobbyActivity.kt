@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectam.ClientInfo
 import com.example.projectam.FirebaseManager
 import com.example.projectam.R
-import com.example.projectam.utils.Game
-import com.example.projectam.utils.LobbyAdapter
+import com.example.projectam.adapters.LobbyAdapter
 import com.example.projectam.utils.Player
 
 class LobbyActivity : AppCompatActivity() {

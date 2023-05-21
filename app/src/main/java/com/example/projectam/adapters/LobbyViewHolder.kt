@@ -1,4 +1,4 @@
-package com.example.projectam.utils
+package com.example.projectam.adapters
 
 import android.annotation.SuppressLint
 import android.view.View
@@ -6,6 +6,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectam.R
+import com.example.projectam.utils.Player
 
 class LobbyViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
 

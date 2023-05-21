@@ -40,7 +40,7 @@ data class Game (
         deck.shuffle()
     }
     //leaves top cards in stirs decks. All the other cards go in cardDeck
-    private fun stirReset() {
+    fun stirReset() {
         val card1 = stirDeck1[stirDeck1.size - 1]
         stirDeck1.removeAt(stirDeck1.size - 1)
         val card2 = stirDeck2[stirDeck2.size - 1]
@@ -57,29 +57,7 @@ data class Game (
         cardDeck.clear()
         cardDeck.addAll(stir)
     }
-    fun getCardFromCardDeck(isRevealed: Boolean = false): Card {
-        if(cardDeck.isEmpty())
-            stirReset()
-        val card = cardDeck[cardDeck.size - 1]
-        cardDeck.removeAt(cardDeck.size - 1)
-        if(isRevealed)
-            card.reveal()
-        return card
-    }
-    fun getCardFromStir1(): Card {
-        if(stirDeck1.isEmpty())
-            return Card(0,true)
-        val card = stirDeck1[stirDeck1.size - 1]
-        stirDeck1.removeAt(stirDeck1.size - 1)
-        return card
-    }
-    fun getCardFromStir2(): Card {
-        if(stirDeck2.isEmpty())
-            return Card(0,true)
-        val card = stirDeck2[stirDeck2.size - 1]
-        stirDeck2.removeAt(stirDeck2.size - 1)
-        return card
-    }
+
 
     fun addToStir1(card: Card) {
         stirDeck1.add(card)

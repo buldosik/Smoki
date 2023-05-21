@@ -3,6 +3,7 @@ package com.example.projectam
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.example.projectam.utils.CardManager
 import com.example.projectam.utils.Game
 import com.example.projectam.utils.Player
 import com.google.firebase.database.*
@@ -166,11 +167,11 @@ class FirebaseManager {
                     }
                     //  Game start
                     game.createNewDeck()
-                    game.stirDeck1.add(game.getCardFromCardDeck(true))
-                    game.stirDeck2.add(game.getCardFromCardDeck(true))
+                    game.stirDeck1.add(CardManager.getCardFromCardDeck(game, true))
+                    game.stirDeck2.add(CardManager.getCardFromCardDeck(game, true))
                     for(j in 1..6) {
                         for(i in game.players) {
-                            i.fields.add(game.getCardFromCardDeck())
+                            i.fields.add(CardManager.getCardFromCardDeck(game))
                         }
                     }
                     database.getReference(code).setValue(game)

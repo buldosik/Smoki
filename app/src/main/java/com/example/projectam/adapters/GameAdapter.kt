@@ -1,10 +1,12 @@
-package com.example.projectam.utils
+package com.example.projectam.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectam.R
+import com.example.projectam.utils.Card
+import com.example.projectam.utils.OnItemListener
 
 class GameAdapter (
     private val context: Context,

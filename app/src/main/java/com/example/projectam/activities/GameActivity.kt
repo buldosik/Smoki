@@ -1,7 +1,6 @@
 package com.example.projectam.activities
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.Window
@@ -15,10 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectam.ClientInfo
 import com.example.projectam.FirebaseManager
 import com.example.projectam.R
-import com.example.projectam.utils.Card
-import com.example.projectam.utils.Game
-import com.example.projectam.utils.GameAdapter
-import com.example.projectam.utils.OnItemListener
+import com.example.projectam.adapters.GameAdapter
+import com.example.projectam.utils.*
 
 class GameActivity : AppCompatActivity(), OnItemListener {
     private var views: MutableList<RecyclerView> = mutableListOf()
@@ -87,8 +84,8 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                 } else if (!chosenDeck) {
                     chosenDeck = true;
                     view.setBackgroundResource(R.drawable.image_border)
-                    chosenCard = myGame.getCardFromCardDeck()
-                    deckIV.setImageResource(chosenCard.getImage())
+                    chosenCard = CardManager.getCardFromCardDeck(myGame)
+                    deckIV.setImageResource(ImageConverter.getImage(chosenCard))
                 }
             }
         }
@@ -96,7 +93,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         stir1IV.setOnClickListener { view ->
             if (ClientInfo.id == myGame.playerTurn) {
                 if (chosenDeck) {
-                    stir1IV.setImageResource(chosenCard.getImage())
+                    stir1IV.setImageResource(ImageConverter.getImage(chosenCard))
                     deckIV.setImageResource(R.drawable.close_image_vert)
                     deckIV.setBackgroundResource(R.drawable.image_disable_border)
 
@@ -106,7 +103,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (chosenToStir) {
                     chosenToStir = false
-                    stir1IV.setImageResource(chosenCard.getImage())
+                    stir1IV.setImageResource(ImageConverter.getImage(chosenCard))
 
                     myGame.addToStir1(chosenCard)
                     myGame.changePlayerTurn()
@@ -116,10 +113,10 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                         Toast.makeText(this, "Stir has no cards", Toast.LENGTH_SHORT).show()
                     } else {
                         view.setBackgroundResource(R.drawable.image_border)
-                        chosenCard = myGame.getCardFromStir1()
+                        chosenCard = CardManager.getCardFromStir1(myGame)
 
                         if (myGame.stirDeck1.isNotEmpty()){
-                            stir1IV.setImageResource(myGame.stirDeck1[myGame.stirDeck1.size - 1].getImage())
+                            stir1IV.setImageResource(ImageConverter.getImage(myGame.stirDeck1[myGame.stirDeck1.size - 1]))
                         } else {
                             stir1IV.setImageResource(R.drawable.close_image)
                         }
@@ -131,7 +128,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         stir2IV.setOnClickListener { view ->
             if (ClientInfo.id == myGame.playerTurn) {
                 if (chosenDeck) {
-                    stir2IV.setImageResource(chosenCard.getImage())
+                    stir2IV.setImageResource(ImageConverter.getImage(chosenCard))
                     deckIV.setImageResource(R.drawable.close_image_vert)
                     deckIV.setBackgroundResource(R.drawable.image_disable_border)
 
@@ -141,7 +138,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (chosenToStir) {
                     chosenToStir = false
-                    stir2IV.setImageResource(chosenCard.getImage())
+                    stir2IV.setImageResource(ImageConverter.getImage(chosenCard))
 
                     myGame.addToStir2(chosenCard)
                     myGame.changePlayerTurn()
@@ -151,10 +148,10 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                         Toast.makeText(this, "Stir has no cards", Toast.LENGTH_SHORT).show()
                     } else {
                         view.setBackgroundResource(R.drawable.image_border)
-                        chosenCard = myGame.getCardFromStir2()
+                        chosenCard = CardManager.getCardFromStir2(myGame)
 
                         if (myGame.stirDeck2.isNotEmpty()){
-                            stir2IV.setImageResource(myGame.stirDeck2[myGame.stirDeck2.size - 1].getImage())
+                            stir2IV.setImageResource(ImageConverter.getImage(myGame.stirDeck2[myGame.stirDeck2.size - 1]))
                         } else {
                             stir2IV.setImageResource(R.drawable.close_image)
                         }
@@ -166,7 +163,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
 
     private val updateAdapters = @SuppressLint("SetTextI18n")
     fun(game: Game) {
-        var playersId: ArrayList<Int> = arrayListOf()
+        val playersId: ArrayList<Int> = arrayListOf()
 
         for (i in 0 until 5) {
             views[i].visibility = View.VISIBLE
