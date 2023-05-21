@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.projectam.ClientInfo
 import com.example.projectam.FirebaseManager
 import com.example.projectam.R
+import com.example.projectam.banWordList
 import com.example.projectam.utils.Player
 
 class ConnectActivity : AppCompatActivity() {
@@ -51,6 +52,6 @@ class ConnectActivity : AppCompatActivity() {
 
     private fun isValidCode() : Boolean {
         val code = romeCodeET.text
-        return code.all{ it.isLetter() || it.isDigit() } && code.length in 3..6
+        return code.all{ it.isLetter() || it.isDigit() } && code.length in 3..6 && banWordList.isValidName(code.toString())
     }
 }

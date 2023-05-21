@@ -9,6 +9,7 @@ import android.widget.EditText
 import com.example.projectam.ClientInfo
 import com.example.projectam.FirebaseManager
 import com.example.projectam.R
+import com.example.projectam.banWordList
 
 class MainActivity : AppCompatActivity() {
     private lateinit var usernameET: EditText
@@ -30,10 +31,8 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, ConnectActivity::class.java))
     }
 
-    //ToDo add checks for shit symbols
-    private fun isValidName(): Boolean {
-        if(usernameET.text.length <= 4)
-            return false
-        return true
+    private fun isValidName() : Boolean {
+        val name = usernameET.text
+        return name.all{ it.isLetter() || it.isDigit() } && name.length in 3..6 && banWordList.isValidName(name.toString())
     }
 }
