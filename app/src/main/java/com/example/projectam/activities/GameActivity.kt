@@ -15,11 +15,17 @@ import com.example.projectam.FirebaseManager
 import com.example.projectam.R
 import com.example.projectam.utils.Game
 import com.example.projectam.utils.GameAdapter
-import com.example.projectam.utils.Player
+import com.example.projectam.utils.OnItemListener
 
-class GameActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity(), OnItemListener {
     private var views: MutableList<RecyclerView> = mutableListOf()
     private var names: MutableList<TextView> = mutableListOf()
+
+    private var chosenDeck: Boolean = false
+    private var chosenStir1: Boolean = false
+    private var chosenStir2: Boolean = false
+
+    private var chosenCard: Int = -1
 
     private lateinit var deckIV: ImageView
     private lateinit var stir1IV: ImageView
@@ -33,7 +39,7 @@ class GameActivity : AppCompatActivity() {
 
         initViews()
         updateAdapters(Game())
-        createListener()
+//        createListener()
     }
 
     private fun createListener() {
@@ -70,6 +76,18 @@ class GameActivity : AppCompatActivity() {
         deckIV = findViewById(R.id.deck)
         stir1IV = findViewById(R.id.stir1)
         stir2IV = findViewById(R.id.stir2)
+
+        deckIV.setOnClickListener { view ->
+            view.setBackgroundResource(R.drawable.image_border)
+        }
+
+        stir1IV.setOnClickListener { view ->
+            view.setBackgroundResource(R.drawable.image_border)
+        }
+
+        stir2IV.setOnClickListener { view ->
+            view.setBackgroundResource(R.drawable.image_border)
+        }
     }
 
     private val updateAdapters = @SuppressLint("SetTextI18n")
@@ -78,12 +96,21 @@ class GameActivity : AppCompatActivity() {
             views[i].visibility = View.VISIBLE
         }
         for (i in 0 until game.players.size) {
-            views[i].adapter = GameAdapter(this, game.players[i].fields)
+            views[i].adapter = GameAdapter(this, game.players[i].fields, this)
             names[i].text = game.players[i].username
         }
         for (i in game.players.size until 5) {
             names[i].text = "Empty"
             views[i].visibility = View.INVISIBLE
+        }
+        ClientInfo.game = game
+    }
+
+    override fun onItemClick(position: Int) {
+        for (player in ClientInfo.game.players) {
+            if (player.id == ClientInfo.id) {
+                player.fields[position].value = chosenCard
+            }
         }
     }
 }
