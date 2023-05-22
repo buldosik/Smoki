@@ -36,11 +36,11 @@ data class Game (
         }
         shuffle(cardDeck)
     }
-    private fun shuffle(deck: MutableList<Card>) {
+    fun shuffle(deck: MutableList<Card>) {
         deck.shuffle()
     }
 
-    private fun stirReset(stir: MutableList<Card>) {
+    fun stirReset(stir: MutableList<Card>) {
         // leaves top cards in stir decks. All the other cards go in cardDeck
         while (stir.size > 1) {
             cardDeck.add(stir[0])
@@ -51,23 +51,7 @@ data class Game (
         stirDeck1.add(card)
     }
     fun addCardToStir2(card: Card){
-        stirDeck1.add(card)
-    }
-    fun getCardFromCardDeck(isRevealed: Boolean = false): Card {
-        // Return top card from cardDeck
-        if(cardDeck.getOrNull(cardDeck.size - 1) == null){
-            stirReset(stirDeck1)
-            stirReset(stirDeck2)
-            shuffle(cardDeck)
-        }
-        return cardDeck[cardDeck.size - 1]
-    }
-    fun getCardFromStir1(): Card {
-        //  Return top card from stir1
-        return stirDeck1[stirDeck1.size - 1]
-    }
-    fun getCardFromStir2(): Card {
-        return stirDeck2[stirDeck2.size - 1]
+        stirDeck2.add(card)
     }
 
     fun changePlayerTurn() {
