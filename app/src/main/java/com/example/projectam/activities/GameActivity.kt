@@ -118,6 +118,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (chosenToStir) {
                     stir1IV.setImageResource(ImageConverter.getImage(chosenCard))
+                    stir1IV.setBackgroundResource(0)
                     stir2IV.setBackgroundResource(0)
 
                     resetFlags()
@@ -157,6 +158,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                 } else if (chosenToStir) {
                     stir2IV.setImageResource(ImageConverter.getImage(chosenCard))
                     stir1IV.setBackgroundResource(0)
+                    stir2IV.setBackgroundResource(0)
 
                     resetFlags()
                     myGame.addToStir2(chosenCard)
@@ -210,9 +212,9 @@ class GameActivity : AppCompatActivity(), OnItemListener {
             }
         }
         myGame = game
-        if(isInit) {
+        if(!isInit && ClientInfo.isStarted) {
             stir1IV.setImageResource(ImageConverter.getImage(game.stirDeck1[game.stirDeck1.size - 1]))
-            stir2IV.setImageResource(ImageConverter.getImage(game.stirDeck2[game.stirDeck1.size - 1]))
+            stir2IV.setImageResource(ImageConverter.getImage(game.stirDeck2[game.stirDeck2.size - 1]))
         }
     }
     override fun onItemClick(position: Int) {

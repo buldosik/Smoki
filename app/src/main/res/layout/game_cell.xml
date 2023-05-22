@@ -6,9 +6,10 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="81dp"
-        android:layout_height="102dp"
+        android:id="@+id/card"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:padding="5dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="-1dp"
         tools:srcCompat="@tools:sample/avatars" />
