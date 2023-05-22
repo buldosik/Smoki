@@ -7,13 +7,15 @@
 
     <ImageView
         android:id="@+id/stir1"
-        android:layout_width="120dp"
-        android:layout_height="80dp"
-        android:src="@drawable/close_image"
+        android:layout_width="75dp"
+        android:layout_height="100dp"
+        android:src="@drawable/close_image_vert"
         app:layout_constraintBottom_toTopOf="@+id/stir2"
         app:layout_constraintEnd_toStartOf="@+id/player5"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toEndOf="@+id/deck"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.484"
         tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -87,15 +89,15 @@
 
     <ImageView
         android:id="@+id/stir2"
-        android:layout_width="120dp"
-        android:layout_height="80dp"
-        android:src="@drawable/close_image"
+        android:layout_width="75dp"
+        android:layout_height="100dp"
+        android:src="@drawable/close_image_vert"
         app:layout_constraintBottom_toTopOf="@+id/player3"
         app:layout_constraintEnd_toStartOf="@+id/player5"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toEndOf="@+id/deck"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.729"/>
+        app:layout_constraintVertical_bias="0.729" />
 
     <TextView
         android:id="@+id/namePlayer1"

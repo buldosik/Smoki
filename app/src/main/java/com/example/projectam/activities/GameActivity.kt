@@ -22,6 +22,8 @@ class GameActivity : AppCompatActivity(), OnItemListener {
     private var names: MutableList<TextView> = mutableListOf()
 
     private var chosenDeck: Boolean = false
+    private var chosenStir1: Boolean = false
+    private var chosenStir2: Boolean = false
     private var chosenToStir: Boolean = false
 
     private lateinit var chosenCard: Card
@@ -38,6 +40,17 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         setContentView(R.layout.game_activity)
 
         initViews()
+//        game = Game()
+//        game.addPlayer(Player(username = "Maxon", isConnected = true))
+//        game.isStarted = true
+//        game.createNewDeck()
+//        game.stirDeck1.add(CardManager.getCardFromCardDeck(game, true))
+//        game.stirDeck2.add(CardManager.getCardFromCardDeck(game, true))
+//        for(j in 1..6) {
+//            for(i in game.players) {
+//                i.fields.add(CardManager.getCardFromCardDeck(game))
+//            }
+//        }
         updateAdapters(Game(), true)
         createListener()
     }
@@ -78,47 +91,52 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         stir2IV = findViewById(R.id.stir2)
 
         deckIV.setOnClickListener { view ->
-            if (ClientInfo.id == myGame.playerTurn) {
+            if (ClientInfo.id == myGame.playerTurn && !ClientInfo.isStarted && !chosenStir1 && !chosenStir2) {
                 if (chosenToStir) {
                     Toast.makeText(this, "Chose stir for drop card", Toast.LENGTH_SHORT).show()
                 } else if (!chosenDeck) {
                     chosenDeck = true;
                     view.setBackgroundResource(R.drawable.image_border)
                     chosenCard = CardManager.getCardFromCardDeck(myGame)
+                    println()
+                    chosenCard.reveal()
                     deckIV.setImageResource(ImageConverter.getImage(chosenCard))
                 }
             }
         }
 
         stir1IV.setOnClickListener { view ->
-            if (ClientInfo.id == myGame.playerTurn) {
+            if (ClientInfo.id == myGame.playerTurn && !ClientInfo.isStarted) {
                 if (chosenDeck) {
                     stir1IV.setImageResource(ImageConverter.getImage(chosenCard))
-                    deckIV.setImageResource(R.drawable.close_image_vert)
-                    deckIV.setBackgroundResource(R.drawable.image_disable_border)
+                    deckIV.setImageResource(ImageConverter.getImage(myGame.cardDeck[myGame.cardDeck.size - 1]))
+                    deckIV.setBackgroundResource(0)
 
-                    chosenDeck = false
+                    resetFlags()
                     myGame.addToStir1(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (chosenToStir) {
-                    chosenToStir = false
                     stir1IV.setImageResource(ImageConverter.getImage(chosenCard))
+                    stir2IV.setBackgroundResource(0)
 
+                    resetFlags()
                     myGame.addToStir1(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
-                } else {
+                } else if (!chosenStir2) {
                     if (myGame.stirDeck1.isEmpty()) {
                         Toast.makeText(this, "Stir has no cards", Toast.LENGTH_SHORT).show()
                     } else {
                         view.setBackgroundResource(R.drawable.image_border)
+
                         chosenCard = CardManager.getCardFromStir1(myGame)
+                        chosenStir1 = true
 
                         if (myGame.stirDeck1.isNotEmpty()){
                             stir1IV.setImageResource(ImageConverter.getImage(myGame.stirDeck1[myGame.stirDeck1.size - 1]))
                         } else {
-                            stir1IV.setImageResource(R.drawable.close_image)
+                            stir1IV.setImageResource(R.drawable.close_image_vert)
                         }
                     }
                 }
@@ -126,39 +144,48 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         }
 
         stir2IV.setOnClickListener { view ->
-            if (ClientInfo.id == myGame.playerTurn) {
+            if (ClientInfo.id == myGame.playerTurn && !ClientInfo.isStarted) {
                 if (chosenDeck) {
                     stir2IV.setImageResource(ImageConverter.getImage(chosenCard))
-                    deckIV.setImageResource(R.drawable.close_image_vert)
-                    deckIV.setBackgroundResource(R.drawable.image_disable_border)
+                    deckIV.setImageResource(ImageConverter.getImage(myGame.cardDeck[myGame.cardDeck.size - 1]))
+                    deckIV.setBackgroundResource(0)
 
-                    chosenDeck = false
+                    resetFlags()
                     myGame.addToStir2(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (chosenToStir) {
-                    chosenToStir = false
                     stir2IV.setImageResource(ImageConverter.getImage(chosenCard))
+                    stir1IV.setBackgroundResource(0)
 
+                    resetFlags()
                     myGame.addToStir2(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
-                } else {
+                } else if (!chosenStir1) {
                     if (myGame.stirDeck2.isEmpty()) {
                         Toast.makeText(this, "Stir has no cards", Toast.LENGTH_SHORT).show()
                     } else {
                         view.setBackgroundResource(R.drawable.image_border)
                         chosenCard = CardManager.getCardFromStir2(myGame)
+                        chosenStir2 = true
 
                         if (myGame.stirDeck2.isNotEmpty()){
                             stir2IV.setImageResource(ImageConverter.getImage(myGame.stirDeck2[myGame.stirDeck2.size - 1]))
                         } else {
-                            stir2IV.setImageResource(R.drawable.close_image)
+                            stir2IV.setImageResource(R.drawable.close_image_vert)
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun resetFlags() {
+        chosenDeck = false
+        chosenStir1 = false
+        chosenStir2 = false
+        chosenToStir = false
     }
 
     private val updateAdapters = @SuppressLint("SetTextI18n")
@@ -183,9 +210,9 @@ class GameActivity : AppCompatActivity(), OnItemListener {
             }
         }
         myGame = game
-        if(!isInit) {
-            stir1IV.setImageResource(ImageConverter.getImage(myGame.stirDeck1[myGame.stirDeck1.size - 1]))
-            stir2IV.setImageResource(ImageConverter.getImage(myGame.stirDeck2[myGame.stirDeck1.size - 1]))
+        if(isInit) {
+            stir1IV.setImageResource(ImageConverter.getImage(game.stirDeck1[game.stirDeck1.size - 1]))
+            stir2IV.setImageResource(ImageConverter.getImage(game.stirDeck2[game.stirDeck1.size - 1]))
         }
     }
     override fun onItemClick(position: Int) {
@@ -196,10 +223,12 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                 player.fields[position].reveal()
                 FirebaseManager.sendPlayerToServer(ClientInfo.gameCode, player)
                 ClientInfo.isStarted = false
-            } else {
+//                views[player.id].adapter = GameAdapter(this, player.fields, this)
+            } else if (chosenDeck || chosenStir1 || chosenStir2) {
                 chosenToStir = true
                 player.fields[position] =
                     chosenCard.also { chosenCard = player.fields[position] }
+                chosenCard.reveal()
                 views[player.id].adapter = GameAdapter(this, player.fields, this)
             }
             break

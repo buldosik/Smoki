@@ -8,6 +8,7 @@ class ImageConverter {
             return if (card.isRevealed) {
                when (card.value) {
                     -2 -> return R.drawable.minus_two
+                    -1 -> return R.drawable.zero // TODO change to special card
                     0 -> return R.drawable.zero
                     1 -> return R.drawable.one
                     2 -> return R.drawable.two
