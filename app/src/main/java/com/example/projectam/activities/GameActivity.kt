@@ -32,6 +32,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
     private lateinit var deckIV: ImageView
     private lateinit var stir1IV: ImageView
     private lateinit var stir2IV: ImageView
+    private lateinit var hintCardIV: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,8 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         setContentView(R.layout.game_activity)
 
         initViews()
+
+        // FOR LOCAL TESTS
 //        game = Game()
 //        game.addPlayer(Player(username = "Maxon", isConnected = true))
 //        game.isStarted = true
@@ -51,7 +54,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
 //                i.fields.add(CardManager.getCardFromCardDeck(game))
 //            }
 //        }
-        updateAdapters(Game(), true)
+        updateAdapters(Game())
         createListener()
     }
 
@@ -89,6 +92,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         deckIV = findViewById(R.id.deck)
         stir1IV = findViewById(R.id.stir1)
         stir2IV = findViewById(R.id.stir2)
+        hintCardIV = findViewById(R.id.hintCard)
 
         deckIV.setOnClickListener { view ->
             if (ClientInfo.id == myGame.playerTurn && !ClientInfo.isStarted && !chosenStir1 && !chosenStir2) {
@@ -98,9 +102,8 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     chosenDeck = true;
                     view.setBackgroundResource(R.drawable.image_border)
                     chosenCard = CardManager.getCardFromCardDeck(myGame)
-                    println()
                     chosenCard.reveal()
-                    deckIV.setImageResource(ImageConverter.getImage(chosenCard))
+                    hintCardIV.setImageResource(ImageConverter.getImage(chosenCard))
                 }
             }
         }
@@ -132,6 +135,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                         view.setBackgroundResource(R.drawable.image_border)
 
                         chosenCard = CardManager.getCardFromStir1(myGame)
+                        hintCardIV.setImageResource(ImageConverter.getImage(chosenCard))
                         chosenStir1 = true
 
                         if (myGame.stirDeck1.isNotEmpty()){
@@ -170,6 +174,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     } else {
                         view.setBackgroundResource(R.drawable.image_border)
                         chosenCard = CardManager.getCardFromStir2(myGame)
+                        hintCardIV.setImageResource(ImageConverter.getImage(chosenCard))
                         chosenStir2 = true
 
                         if (myGame.stirDeck2.isNotEmpty()){
@@ -188,10 +193,11 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         chosenStir1 = false
         chosenStir2 = false
         chosenToStir = false
+        hintCardIV.setImageResource(R.drawable.close_image_vert)
     }
 
     private val updateAdapters = @SuppressLint("SetTextI18n")
-    fun(game: Game, isInit: Boolean) {
+    fun(game: Game) {
         val playersId: ArrayList<Int> = arrayListOf()
 
         for (i in 0 until 5) {
@@ -212,10 +218,17 @@ class GameActivity : AppCompatActivity(), OnItemListener {
             }
         }
         myGame = game
-        if(!isInit && ClientInfo.isStarted) {
+
+        if(game.stirDeck1.isNotEmpty()) {
             stir1IV.setImageResource(ImageConverter.getImage(game.stirDeck1[game.stirDeck1.size - 1]))
+        }
+        else
+            stir1IV.setImageResource(ImageConverter.getImage(Card(0,false)))
+        if(game.stirDeck2.isNotEmpty()) {
             stir2IV.setImageResource(ImageConverter.getImage(game.stirDeck2[game.stirDeck2.size - 1]))
         }
+        else
+            stir2IV.setImageResource(ImageConverter.getImage(Card(0,false)))
     }
     override fun onItemClick(position: Int) {
         for (player in myGame.players) {
@@ -231,6 +244,8 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                 player.fields[position] =
                     chosenCard.also { chosenCard = player.fields[position] }
                 chosenCard.reveal()
+                hintCardIV.setImageResource(ImageConverter.getImage(chosenCard))
+
                 views[player.id].adapter = GameAdapter(this, player.fields, this)
             }
             break

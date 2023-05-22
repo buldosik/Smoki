@@ -46,6 +46,8 @@ data class Game (
         val card2 = stirDeck2[stirDeck2.size - 1]
         stirDeck2.removeAt(stirDeck2.size - 1)
         val stir = mutableListOf<Card>()
+        stirDeck1.forEach { card -> card.isRevealed = false }
+        stirDeck2.forEach { card -> card.isRevealed = false }
         stir.addAll(stirDeck1)
         stir.addAll(stirDeck2)
         shuffle(stir)

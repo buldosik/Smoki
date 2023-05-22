@@ -9,7 +9,6 @@
         android:id="@+id/card"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:padding="5dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="-1dp"
         tools:srcCompat="@tools:sample/avatars" />
