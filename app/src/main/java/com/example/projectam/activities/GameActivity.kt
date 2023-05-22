@@ -1,7 +1,12 @@
 package com.example.projectam.activities
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.*
 import android.os.Bundle
+import android.os.Handler
+import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -9,6 +14,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.ViewCompat.setRotation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectam.ClientInfo
@@ -21,11 +29,15 @@ class GameActivity : AppCompatActivity(), OnItemListener {
     private var views: MutableList<RecyclerView> = mutableListOf()
     private var names: MutableList<TextView> = mutableListOf()
 
+    //выбор колоды
     private var chosenDeck: Boolean = false
     private var chosenStir1: Boolean = false
     private var chosenStir2: Boolean = false
+    //выбор сброса
     private var chosenToStir: Boolean = false
-
+    private var timesClicked = 0
+    private var fromPosition = -1
+    private var toPosition = -1
     private lateinit var chosenCard: Card
     lateinit var myGame: Game
 
@@ -40,17 +52,6 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         setContentView(R.layout.game_activity)
 
         initViews()
-//        game = Game()
-//        game.addPlayer(Player(username = "Maxon", isConnected = true))
-//        game.isStarted = true
-//        game.createNewDeck()
-//        game.stirDeck1.add(CardManager.getCardFromCardDeck(game, true))
-//        game.stirDeck2.add(CardManager.getCardFromCardDeck(game, true))
-//        for(j in 1..6) {
-//            for(i in game.players) {
-//                i.fields.add(CardManager.getCardFromCardDeck(game))
-//            }
-//        }
         updateAdapters(Game(), true)
         createListener()
     }
@@ -89,14 +90,14 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         deckIV = findViewById(R.id.deck)
         stir1IV = findViewById(R.id.stir1)
         stir2IV = findViewById(R.id.stir2)
-
         deckIV.setOnClickListener { view ->
             if (ClientInfo.id == myGame.playerTurn && !ClientInfo.isStarted && !chosenStir1 && !chosenStir2) {
                 if (chosenToStir) {
-                    Toast.makeText(this, "Chose stir for drop card", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Pick up stir tile", Toast.LENGTH_SHORT).show()
                 } else if (!chosenDeck) {
                     chosenDeck = true;
                     view.setBackgroundResource(R.drawable.image_border)
+
                     chosenCard = CardManager.getCardFromCardDeck(myGame)
                     println()
                     chosenCard.reveal()
@@ -113,7 +114,8 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     deckIV.setBackgroundResource(0)
 
                     resetFlags()
-                    myGame.addToStir1(chosenCard)
+                    chosenCard.setSwap(false)
+                    myGame.addCardToStir1(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (chosenToStir) {
@@ -121,19 +123,34 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     stir2IV.setBackgroundResource(0)
 
                     resetFlags()
-                    myGame.addToStir1(chosenCard)
+                    chosenCard.setSwap(false)
+                    myGame.addCardToStir1(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (!chosenStir2) {
                     if (myGame.stirDeck1.isEmpty()) {
                         Toast.makeText(this, "Stir has no cards", Toast.LENGTH_SHORT).show()
                     } else {
-                        view.setBackgroundResource(R.drawable.image_border)
+                    //TODO add rotation to background
+                    /*val backgroundDrawable = ContextCompat.getDrawable(this, R.drawable.image_border) // Load the background drawable
+                    val rotatedDrawable = RotateDrawable().apply {
+                    drawable = backgroundDrawable // Set the background drawable as the inner drawable
+                    fromDegrees = 0f // Starting rotation angle
+                    toDegrees = 270f // Ending rotation angle (adjust as needed)
+                    pivotX = 0.5f // X-axis pivot point (0.5 means center)
+                    pivotY = 0.5f // Y-axis pivot point (0.5 means center)
+                    }
+
+                    val layerDrawable = LayerDrawable(arrayOf(rotatedDrawable))
+                    layerDrawable.getDrawable(0).setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
+
+                    view.background = layerDrawable*/
 
                         chosenCard = CardManager.getCardFromStir1(myGame)
                         chosenStir1 = true
 
                         if (myGame.stirDeck1.isNotEmpty()){
+
                             stir1IV.setImageResource(ImageConverter.getImage(myGame.stirDeck1[myGame.stirDeck1.size - 1]))
                         } else {
                             stir1IV.setImageResource(R.drawable.close_image_vert)
@@ -142,35 +159,48 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                 }
             }
         }
-
         stir2IV.setOnClickListener { view ->
             if (ClientInfo.id == myGame.playerTurn && !ClientInfo.isStarted) {
                 if (chosenDeck) {
                     stir2IV.setImageResource(ImageConverter.getImage(chosenCard))
                     deckIV.setImageResource(ImageConverter.getImage(myGame.cardDeck[myGame.cardDeck.size - 1]))
                     deckIV.setBackgroundResource(0)
-
                     resetFlags()
-                    myGame.addToStir2(chosenCard)
+                    chosenCard.setSwap(false)
+                    myGame.addCardToStir2(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (chosenToStir) {
                     stir2IV.setImageResource(ImageConverter.getImage(chosenCard))
                     stir1IV.setBackgroundResource(0)
-
                     resetFlags()
-                    myGame.addToStir2(chosenCard)
+                    chosenCard.setSwap(false)
+                    myGame.addCardToStir2(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (!chosenStir1) {
                     if (myGame.stirDeck2.isEmpty()) {
                         Toast.makeText(this, "Stir has no cards", Toast.LENGTH_SHORT).show()
                     } else {
-                        view.setBackgroundResource(R.drawable.image_border)
+
+                        //TODO add rotation to background
+                        /*val backgroundDrawable = ContextCompat.getDrawable(this, R.drawable.image_border) // Load the background drawable
+                        val rotatedDrawable = RotateDrawable().apply {
+                        drawable = backgroundDrawable // Set the background drawable as the inner drawable
+                        fromDegrees = 0f // Starting rotation angle
+                        toDegrees = 270f // Ending rotation angle (adjust as needed)
+                        pivotX = 0.5f // X-axis pivot point (0.5 means center)
+                        pivotY = 0.5f // Y-axis pivot point (0.5 means center)
+                        }
+
+                        val layerDrawable = LayerDrawable(arrayOf(rotatedDrawable))
+                        layerDrawable.getDrawable(0).setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP)
+
+                        view.background = layerDrawable*/
                         chosenCard = CardManager.getCardFromStir2(myGame)
                         chosenStir2 = true
 
-                        if (myGame.stirDeck2.isNotEmpty()){
+                        if (myGame.stirDeck2.isNotEmpty()) {
                             stir2IV.setImageResource(ImageConverter.getImage(myGame.stirDeck2[myGame.stirDeck2.size - 1]))
                         } else {
                             stir2IV.setImageResource(R.drawable.close_image_vert)
@@ -203,6 +233,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                 views[ClientInfo.id].adapter = GameAdapter(this, player.fields, this)
             }
         }
+        // make disconnected guys invisible
         for (i in 0 until 5) {
             if (!playersId.contains(i)) {
                 names[i].text = "Empty"
@@ -210,28 +241,58 @@ class GameActivity : AppCompatActivity(), OnItemListener {
             }
         }
         myGame = game
-        if(isInit) {
+        if(!isInit && ClientInfo.isStarted) {
             stir1IV.setImageResource(ImageConverter.getImage(game.stirDeck1[game.stirDeck1.size - 1]))
             stir2IV.setImageResource(ImageConverter.getImage(game.stirDeck2[game.stirDeck1.size - 1]))
         }
     }
     override fun onItemClick(position: Int) {
-        for (player in myGame.players) {
-            if (player.id != ClientInfo.id)
-                continue
-            if (ClientInfo.isStarted) {
-                player.fields[position].reveal()
-                FirebaseManager.sendPlayerToServer(ClientInfo.gameCode, player)
-                ClientInfo.isStarted = false
+        timesClicked++
+        Handler().postDelayed({
+            if(timesClicked == 1){
+                for (player in myGame.players) {
+                    if (player.id != ClientInfo.id)
+                        continue
+                    if (ClientInfo.isStarted) {
+                        player.fields[position].reveal()
+                        FirebaseManager.sendPlayerToServer(ClientInfo.gameCode, player)
+                        ClientInfo.isStarted = false
 //                views[player.id].adapter = GameAdapter(this, player.fields, this)
-            } else if (chosenDeck || chosenStir1 || chosenStir2) {
-                chosenToStir = true
-                player.fields[position] =
-                    chosenCard.also { chosenCard = player.fields[position] }
-                chosenCard.reveal()
-                views[player.id].adapter = GameAdapter(this, player.fields, this)
+                    } else if (chosenDeck || chosenStir1 || chosenStir2) {
+                        chosenToStir = true
+                        player.fields[position] =
+                            chosenCard.also { chosenCard = player.fields[position] }
+                        chosenCard.reveal()
+                        views[player.id].adapter = GameAdapter(this, player.fields, this)
+                    }
+                    break
+                }
             }
-            break
-        }
+            else if(timesClicked == 2){
+                System.out.println("two clicks")
+                for (player in myGame.players) {
+                    if (player.id != ClientInfo.id || player.fields[position].isSwapped)
+                        continue
+
+                    if(fromPosition!=-1){
+                        toPosition = position
+                        System.out.println("taken 2 pos " + toPosition)
+                        //mark nine to make further swaps impossible
+                        player.fields[fromPosition].setSwap(true)
+                        myGame.swapNine(fromPosition, toPosition, player.id)
+                        views[player.id].adapter = GameAdapter(this, player.fields, this)
+                        Toast.makeText(this, "Swap done", Toast.LENGTH_SHORT).show()
+                        fromPosition = -1
+                        toPosition = -1
+                    }else if(player.fields[position].value == 9){
+                        System.out.println("taken 1 pos " + fromPosition)
+                        fromPosition = position
+                    }
+                    break
+                }
+            }
+            timesClicked = 0
+            print(timesClicked)
+        }, 500L)
     }
 }
