@@ -1,6 +1,7 @@
 package com.example.projectam.activities
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.*
 import android.os.Bundle
 import android.view.View
 import android.view.Window
@@ -38,8 +39,26 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(R.layout.game_activity)
+        val view = layoutInflater.inflate(R.layout.game_activity, null)
 
+        setContentView(view)
+        // Added sample zoom
+        // ToDo do it in some nice way
+        view.setOnClickListener(object : View.OnClickListener {
+            var zoomFactor = 2f
+            var zoomedOut = false
+            override fun onClick(v: View) {
+                if (zoomedOut) {
+                    v.scaleX = 1f
+                    v.scaleY = 1f
+                    zoomedOut = false
+                } else {
+                    v.scaleX = zoomFactor
+                    v.scaleY = zoomFactor
+                    zoomedOut = true
+                }
+            }
+        })
         initViews()
 
         // FOR LOCAL TESTS
