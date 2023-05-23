@@ -69,8 +69,14 @@ data class Game (
     }
     fun swapTen(cardTen: Card, cardsPosition: Int, playersId: Int){
         //the idea is to go from an el: a -> 0 from 4 -> a+1
+
         var cardToBeChanged = cardTen
         var temporaryCard = players[playersId].fields[cardsPosition]
+        if(players.size == 1){
+            players[playersId].fields[cardsPosition] = cardToBeChanged
+            cardToBeChanged = temporaryCard
+            return
+        }
         // goes for example from [2->1->0]
         for (id in playersId downTo 0){
             if(!players[id].isConnected) continue;
@@ -88,5 +94,18 @@ data class Game (
         val temporary = players[playersId].fields[cardsPositionFrom]
         players[playersId].fields[cardsPositionFrom] = players[playersId].fields[cardsPositionTo]
         players[playersId].fields[cardsPositionTo] = temporary
+    }
+    fun copyNextCardsValue(cardsPositionReflactor: Int, cardsPositionBeReflacted: Int, playersId: Int){
+        when (cardsPositionReflactor) {
+            1, 4 -> {
+                players[playersId].fields[cardsPositionReflactor].value = players[playersId].fields[cardsPositionReflactor-1].value
+            }
+            0, 3 -> {
+                players[playersId].fields[cardsPositionReflactor].value= players[playersId].fields[cardsPositionReflactor+1].value
+            }
+            else -> {
+                players[playersId].fields[cardsPositionReflactor].value= players[playersId].fields[cardsPositionBeReflacted].value
+            }
+        }
     }
 }

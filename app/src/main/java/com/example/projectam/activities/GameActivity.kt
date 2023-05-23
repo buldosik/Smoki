@@ -1,12 +1,10 @@
 package com.example.projectam.activities
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.PorterDuff
 import android.graphics.drawable.*
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
-import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -14,9 +12,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.ViewCompat.setRotation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectam.ClientInfo
@@ -40,7 +35,8 @@ class GameActivity : AppCompatActivity(), OnItemListener {
     private var toPosition = -1
     private lateinit var chosenCard: Card
     lateinit var myGame: Game
-
+    private var media: MediaPlayer? = null
+    private var music: MediaPlayer? = null
     private lateinit var deckIV: ImageView
     private lateinit var stir1IV: ImageView
     private lateinit var stir2IV: ImageView
@@ -54,6 +50,14 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         initViews()
         updateAdapters(Game(), true)
         createListener()
+        /*
+        music = MediaPlayer.create(this, R.raw.tavern_sound)
+        if (music != null) {
+            music!!.setOnCompletionListener { mediaPlayer ->
+                mediaPlayer.release()
+            }
+            music!!.start()
+        }*/
     }
 
     private fun createListener() {
@@ -90,6 +94,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         deckIV = findViewById(R.id.deck)
         stir1IV = findViewById(R.id.stir1)
         stir2IV = findViewById(R.id.stir2)
+
         deckIV.setOnClickListener { view ->
             if (ClientInfo.id == myGame.playerTurn && !ClientInfo.isStarted && !chosenStir1 && !chosenStir2) {
                 if (chosenToStir) {
@@ -263,6 +268,10 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                         player.fields[position] =
                             chosenCard.also { chosenCard = player.fields[position] }
                         chosenCard.reveal()
+                        //wow, that's gonna be awesome!!
+                        if(chosenCard.value == 10){
+                            myGame.swapTen(chosenCard, position, player.id)
+                        }
                         views[player.id].adapter = GameAdapter(this, player.fields, this)
                     }
                     break
@@ -284,6 +293,13 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                         Toast.makeText(this, "Swap done", Toast.LENGTH_SHORT).show()
                         fromPosition = -1
                         toPosition = -1
+                        media = MediaPlayer.create(this, R.raw.card_flip)
+                        if (media != null) {
+                            media!!.setOnCompletionListener { mediaPlayer ->
+                                mediaPlayer.release()
+                            }
+                            media!!.start()
+                        }
                     }else if(player.fields[position].value == 9){
                         System.out.println("taken 1 pos " + fromPosition)
                         fromPosition = position
