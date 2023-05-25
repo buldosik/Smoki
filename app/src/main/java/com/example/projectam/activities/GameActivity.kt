@@ -249,15 +249,15 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     } else if (chosenDeck || chosenStir1 || chosenStir2) {
                         chosenToStir = true
                         if (chosenCard.value == 10) {
-                            player.fields[position] =
-                                chosenCard.also { chosenCard = player.fields[position] }
                             for (i in myGame.players.size - 2 downTo 0) {
-                                if (myGame.players[i] == player) continue
                                 myGame.players[i].fields[position] = myGame.players[i + 1].fields[position]
                                 myGame.players[i + 1].fields[position].reveal()
                             }
                             myGame.players[myGame.players.size - 1].fields[position] = myGame.players[0].fields[position]
                             myGame.players[myGame.players.size - 1].fields[position].reveal()
+                            player.fields[position] =
+                                chosenCard.also { chosenCard = player.fields[position] }
+                            myGame.addToStir1(chosenCard)
                         } else {
                             player.fields[position] =
                                 chosenCard.also { chosenCard = player.fields[position] }
@@ -278,7 +278,6 @@ class GameActivity : AppCompatActivity(), OnItemListener {
 
                     if (fromPosition!=-1) {
                         toPosition = position
-                        System.out.println("taken 2 pos " + toPosition)
                         //mark nine to make further swaps impossible
                         player.fields[fromPosition].setSwap(true)
                         myGame.swapNine(fromPosition, toPosition, player.id)
@@ -301,7 +300,6 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                 }
             }
             timesClicked = 0
-            print(timesClicked)
         }, 500L)
     }
 }
