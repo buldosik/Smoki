@@ -2,7 +2,9 @@ package com.example.projectam.activities
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.*
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -26,10 +28,12 @@ class GameActivity : AppCompatActivity(), OnItemListener {
     private var chosenStir1: Boolean = false
     private var chosenStir2: Boolean = false
     private var chosenToStir: Boolean = false
-
+    private var timesClicked = 0
+    private var fromPosition = -1
+    private var toPosition = -1
     private lateinit var chosenCard: Card
     lateinit var myGame: Game
-
+    private var media: MediaPlayer? = null
     private lateinit var deckIV: ImageView
     private lateinit var stir1IV: ImageView
     private lateinit var stir2IV: ImageView
@@ -39,29 +43,9 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        val view = layoutInflater.inflate(R.layout.game_activity, null)
+        setContentView(R.layout.game_activity)
 
-        setContentView(view)
-        // Added sample zoom
-        // ToDo do it in some nice way
-        view.setOnClickListener(object : View.OnClickListener {
-            var zoomFactor = 2f
-            var zoomedOut = false
-            override fun onClick(v: View) {
-                if (zoomedOut) {
-                    v.scaleX = 1f
-                    v.scaleY = 1f
-                    zoomedOut = false
-                } else {
-                    v.scaleX = zoomFactor
-                    v.scaleY = zoomFactor
-                    zoomedOut = true
-                }
-            }
-        })
         initViews()
-
-        // FOR LOCAL TESTS
 //        game = Game()
 //        game.addPlayer(Player(username = "Maxon", isConnected = true))
 //        game.isStarted = true
@@ -135,7 +119,8 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     deckIV.setBackgroundResource(0)
 
                     resetFlags()
-                    myGame.addToStir1(chosenCard)
+                    chosenCard.setSwap(false)
+                    myGame.addCardToStir1(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (chosenToStir) {
@@ -144,7 +129,8 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     stir2IV.setBackgroundResource(0)
 
                     resetFlags()
-                    myGame.addToStir1(chosenCard)
+                    chosenCard.setSwap(false)
+                    myGame.addCardToStir1(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (!chosenStir2) {
@@ -175,7 +161,8 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     deckIV.setBackgroundResource(0)
 
                     resetFlags()
-                    myGame.addToStir2(chosenCard)
+                    chosenCard.setSwap(false)
+                    myGame.addCardToStir2(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (chosenToStir) {
@@ -184,7 +171,8 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     stir2IV.setBackgroundResource(0)
 
                     resetFlags()
-                    myGame.addToStir2(chosenCard)
+                    chosenCard.setSwap(false)
+                    myGame.addCardToStir2(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (!chosenStir1) {
@@ -238,36 +226,73 @@ class GameActivity : AppCompatActivity(), OnItemListener {
         }
         myGame = game
 
-        if(game.stirDeck1.isNotEmpty()) {
+        if(game.stirDeck1.isNotEmpty())
             stir1IV.setImageResource(ImageConverter.getImage(game.stirDeck1[game.stirDeck1.size - 1]))
-        }
         else
             stir1IV.setImageResource(ImageConverter.getImage(Card(0,false)))
-        if(game.stirDeck2.isNotEmpty()) {
+        if(game.stirDeck2.isNotEmpty())
             stir2IV.setImageResource(ImageConverter.getImage(game.stirDeck2[game.stirDeck2.size - 1]))
-        }
         else
             stir2IV.setImageResource(ImageConverter.getImage(Card(0,false)))
     }
     override fun onItemClick(position: Int) {
-        for (player in myGame.players) {
-            if (player.id != ClientInfo.id)
-                continue
-            if (ClientInfo.isStarted) {
-                player.fields[position].reveal()
-                FirebaseManager.sendPlayerToServer(ClientInfo.gameCode, player)
-                ClientInfo.isStarted = false
+        timesClicked++
+        Handler().postDelayed({
+            if(timesClicked == 1){
+                for (player in myGame.players) {
+                    if (player.id != ClientInfo.id)
+                        continue
+                    if (ClientInfo.isStarted) {
+                        player.fields[position].reveal()
+                        FirebaseManager.sendPlayerToServer(ClientInfo.gameCode, player)
+                        ClientInfo.isStarted = false
 //                views[player.id].adapter = GameAdapter(this, player.fields, this)
-            } else if (chosenDeck || chosenStir1 || chosenStir2) {
-                chosenToStir = true
-                player.fields[position] =
-                    chosenCard.also { chosenCard = player.fields[position] }
-                chosenCard.reveal()
-                hintCardIV.setImageResource(ImageConverter.getImage(chosenCard))
-
-                views[player.id].adapter = GameAdapter(this, player.fields, this)
+                    } else if (chosenDeck || chosenStir1 || chosenStir2) {
+                        chosenToStir = true
+                        player.fields[position] =
+                            chosenCard.also { chosenCard = player.fields[position] }
+                        chosenCard.reveal()
+                        //wow, that's gonna be awesome!!
+                        if(chosenCard.value == 10){
+                            myGame.swapTen(chosenCard, position, player.id)
+                        }
+                        views[player.id].adapter = GameAdapter(this, player.fields, this)
+                    }
+                    break
+                }
             }
-            break
-        }
+            else if(timesClicked == 2){
+                System.out.println("two clicks")
+                for (player in myGame.players) {
+                    if (player.id != ClientInfo.id || player.fields[position].isSwapped)
+                        continue
+
+                    if(fromPosition!=-1){
+                        toPosition = position
+                        System.out.println("taken 2 pos " + toPosition)
+                        //mark nine to make further swaps impossible
+                        player.fields[fromPosition].setSwap(true)
+                        myGame.swapNine(fromPosition, toPosition, player.id)
+                        views[player.id].adapter = GameAdapter(this, player.fields, this)
+                        Toast.makeText(this, "Swap done", Toast.LENGTH_SHORT).show()
+                        fromPosition = -1
+                        toPosition = -1
+                        media = MediaPlayer.create(this, R.raw.card_flip)
+                        if (media != null) {
+                            media!!.setOnCompletionListener { mediaPlayer ->
+                                mediaPlayer.release()
+                            }
+                            media!!.start()
+                        }
+                    }else if(player.fields[position].value == 9){
+                        System.out.println("taken 1 pos " + fromPosition)
+                        fromPosition = position
+                    }
+                    break
+                }
+            }
+            timesClicked = 0
+            print(timesClicked)
+        }, 500L)
     }
 }

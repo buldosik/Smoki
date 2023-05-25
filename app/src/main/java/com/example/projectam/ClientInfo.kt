@@ -8,7 +8,6 @@ class ClientInfo {
         var id: Int = -1
         var gameCode: String = ""
         var isStarted: Boolean = true
-
         fun init(code: String, name: String) {
             username = name
             gameCode = code
