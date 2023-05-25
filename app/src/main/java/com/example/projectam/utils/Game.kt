@@ -95,11 +95,7 @@ data class Game (
 
         var cardToBeChanged = cardTen
         var temporaryCard = players[playersId].fields[cardsPosition]
-        if(players.size == 1){
-            players[playersId].fields[cardsPosition] = cardToBeChanged
-            cardToBeChanged = temporaryCard
-            return
-        }
+
         // goes for example from [2->1->0]
         for (id in playersId downTo 0){
             if(!players[id].isConnected) continue;

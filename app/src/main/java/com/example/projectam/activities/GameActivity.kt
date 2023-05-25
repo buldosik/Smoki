@@ -120,7 +120,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
 
                     resetFlags()
                     chosenCard.setSwap(false)
-                    myGame.addCardToStir1(chosenCard)
+                    myGame.addToStir1(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (chosenToStir) {
@@ -130,7 +130,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
 
                     resetFlags()
                     chosenCard.setSwap(false)
-                    myGame.addCardToStir1(chosenCard)
+                    myGame.addToStir1(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (!chosenStir2) {
@@ -162,7 +162,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
 
                     resetFlags()
                     chosenCard.setSwap(false)
-                    myGame.addCardToStir2(chosenCard)
+                    myGame.addToStir2(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (chosenToStir) {
@@ -172,7 +172,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
 
                     resetFlags()
                     chosenCard.setSwap(false)
-                    myGame.addCardToStir2(chosenCard)
+                    myGame.addToStir2(chosenCard)
                     myGame.changePlayerTurn()
                     FirebaseManager.sendGameToServer(ClientInfo.gameCode, myGame)
                 } else if (!chosenStir1) {
@@ -246,16 +246,25 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                         player.fields[position].reveal()
                         FirebaseManager.sendPlayerToServer(ClientInfo.gameCode, player)
                         ClientInfo.isStarted = false
-//                views[player.id].adapter = GameAdapter(this, player.fields, this)
                     } else if (chosenDeck || chosenStir1 || chosenStir2) {
                         chosenToStir = true
-                        player.fields[position] =
-                            chosenCard.also { chosenCard = player.fields[position] }
-                        chosenCard.reveal()
-                        //wow, that's gonna be awesome!!
-                        if(chosenCard.value == 10){
-                            myGame.swapTen(chosenCard, position, player.id)
+                        if (chosenCard.value == 10) {
+                            player.fields[position] =
+                                chosenCard.also { chosenCard = player.fields[position] }
+                            for (i in myGame.players.size - 2 downTo 0) {
+                                if (myGame.players[i] == player) continue
+                                myGame.players[i].fields[position] = myGame.players[i + 1].fields[position]
+                                myGame.players[i + 1].fields[position].reveal()
+                            }
+                            myGame.players[myGame.players.size - 1].fields[position] = myGame.players[0].fields[position]
+                            myGame.players[myGame.players.size - 1].fields[position].reveal()
+                        } else {
+                            player.fields[position] =
+                                chosenCard.also { chosenCard = player.fields[position] }
                         }
+                        chosenCard.reveal()
+                        hintCardIV.setImageResource(ImageConverter.getImage(chosenCard))
+                        //wow, that's gonna be awesome!!
                         views[player.id].adapter = GameAdapter(this, player.fields, this)
                     }
                     break
@@ -267,7 +276,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     if (player.id != ClientInfo.id || player.fields[position].isSwapped)
                         continue
 
-                    if(fromPosition!=-1){
+                    if (fromPosition!=-1) {
                         toPosition = position
                         System.out.println("taken 2 pos " + toPosition)
                         //mark nine to make further swaps impossible
@@ -284,7 +293,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                             }
                             media!!.start()
                         }
-                    }else if(player.fields[position].value == 9){
+                    } else if(player.fields[position].value == 9){
                         System.out.println("taken 1 pos " + fromPosition)
                         fromPosition = position
                     }
