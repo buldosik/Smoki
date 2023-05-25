@@ -39,6 +39,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
     private lateinit var stir2IV: ImageView
     private lateinit var hintCardIV: ImageView
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -248,6 +249,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                         ClientInfo.isStarted = false
                     } else if (chosenDeck || chosenStir1 || chosenStir2) {
                         chosenToStir = true
+
                         if (chosenCard.value == 10) {
                             chosenToStir = false
                             var temp = myGame.players[myGame.players.size - 1].fields[position]
@@ -285,6 +287,7 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                         player.fields[fromPosition].setSwap(true)
                         myGame.swapNine(fromPosition, toPosition, player.id)
                         views[player.id].adapter = GameAdapter(this, player.fields, this)
+                        FirebaseManager.sendPlayerToServer(ClientInfo.gameCode, player)
                         Toast.makeText(this, "Swap done", Toast.LENGTH_SHORT).show()
                         fromPosition = -1
                         toPosition = -1
