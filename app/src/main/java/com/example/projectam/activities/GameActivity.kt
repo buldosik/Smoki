@@ -249,9 +249,12 @@ class GameActivity : AppCompatActivity(), OnItemListener {
                     } else if (chosenDeck || chosenStir1 || chosenStir2) {
                         chosenToStir = true
                         if (chosenCard.value == 10) {
+                            chosenToStir = false
+                            var temp = myGame.players[myGame.players.size - 1].fields[position]
                             for (i in myGame.players.size - 2 downTo 0) {
-                                myGame.players[i].fields[position] = myGame.players[i + 1].fields[position]
-                                myGame.players[i + 1].fields[position].reveal()
+                                myGame.players[i].fields[position] =
+                                    temp.also { temp = myGame.players[i].fields[position] }
+                                myGame.players[i].fields[position].reveal()
                             }
                             myGame.players[myGame.players.size - 1].fields[position] = myGame.players[0].fields[position]
                             myGame.players[myGame.players.size - 1].fields[position].reveal()
