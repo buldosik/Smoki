@@ -9,6 +9,7 @@ data class Game (
     var stirDeck1: MutableList<Card> = mutableListOf(),
     var stirDeck2: MutableList<Card> = mutableListOf(),
     var isStarted: Boolean = false,
+    var isFinished: Boolean = false,
     var playerTurn: Int = 0
         ) {
     fun addPlayer(player: Player) {
@@ -70,6 +71,42 @@ data class Game (
     }
 
     fun changePlayerTurn() {
-        playerTurn = (playerTurn + 1) % players.size
+        for(i in 0 until players.size) {
+            if(players[i].id != playerTurn)
+                continue
+            playerTurn = if(i == players.size - 1)
+                players[0].id
+            else
+                players[i + 1].id
+            break
+        }
+    }
+
+    fun getCurrentPlayerIndex() : Int {
+        for (i in 0 until players.size)
+            if (players[i].id == ClientInfo.id)
+                return i
+        return -1
+    }
+
+    fun isRevealed(): Boolean {
+        val flag = players.any { player ->
+            player.fields.all { card ->
+                card.isRevealed
+            }
+        }
+        return flag
+    }
+    fun swapTen(position: Int) {
+        val startIndex = getCurrentPlayerIndex()
+        var cardToBeChanged: Card
+
+        for (i in 1 until players.size) {
+            val index = (startIndex + i) % players.size
+            cardToBeChanged = players[index].fields[position]
+            players[index].fields[position] = ClientInfo.chosenCard
+            ClientInfo.chosenCard = cardToBeChanged
+            ClientInfo.chosenCard.reveal()
+        }
     }
 }

@@ -5,4 +5,11 @@ data class Player (
     var username: String = "",
     var isConnected: Boolean = false,
     var fields: MutableList<Card> = mutableListOf()
-        )
+        ) {
+    fun isRevealedAny(): Boolean {
+        val flag = fields.any { card ->
+            card.isRevealed
+        }
+        return flag
+    }
+}
