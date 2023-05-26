@@ -1,6 +1,7 @@
 package com.example.projectam.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.drawable.*
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +10,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +17,9 @@ import com.example.projectam.ClientInfo
 import com.example.projectam.FirebaseManager
 import com.example.projectam.R
 import com.example.projectam.adapters.GameAdapter
+import com.example.projectam.states.RevealMirrors
 import com.example.projectam.states.ChoosingDeck
+import com.example.projectam.states.EndTurn
 import com.example.projectam.states.GameStateContext
 import com.example.projectam.states.RevealFirstCard
 import com.example.projectam.utils.*
@@ -112,10 +114,12 @@ class GameActivity : AppCompatActivity() {
 
     private val updateAdapters = @SuppressLint("SetTextI18n")
     fun(game: Game) {
-        if(game.isFinished) {
-            // ToDo show winner
+        if(game.isCalculatedScores) {
+            ClientInfo.game = game
+            startActivity(Intent(this, ResultActivity::class.java))
             return
         }
+        ClientInfo.game = game
 
         val playersId: ArrayList<Int> = arrayListOf()
 
@@ -128,7 +132,18 @@ class GameActivity : AppCompatActivity() {
             if(!game.players[game.getCurrentPlayerIndex()].isRevealedAny())
                 currentState.setState(RevealFirstCard())
         }
-
+        if(game.isFinished) {
+            Log.d("GameActivity", "State - reveal mirrors")
+            currentState.setState(RevealMirrors())
+            if(game.players[game.getCurrentPlayerIndex()].fields.all {card ->
+                    card.value != -1
+                }) {
+                for(i in game.players[game.getCurrentPlayerIndex()].fields)
+                    Log.d("GameActivity", "value - ${i.value}")
+                Log.d("GameActivity", "State - end turn")
+                currentState.setState(EndTurn())
+            }
+        }
         for (player in game.players) {
             playersId.add(player.id)
             views[player.id].adapter = GameAdapter(this, player.fields, null)
@@ -143,7 +158,6 @@ class GameActivity : AppCompatActivity() {
                 views[i].visibility = View.INVISIBLE
             }
         }
-        ClientInfo.game = game
 
         if(game.stirDeck1.isNotEmpty())
             stir1IV.setImageResource(ImageConverter.getImage(game.stirDeck1[game.stirDeck1.size - 1]))

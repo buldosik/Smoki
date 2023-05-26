@@ -10,6 +10,7 @@ data class Game (
     var stirDeck2: MutableList<Card> = mutableListOf(),
     var isStarted: Boolean = false,
     var isFinished: Boolean = false,
+    var isCalculatedScores: Boolean = false,
     var playerTurn: Int = 0
         ) {
     fun addPlayer(player: Player) {
@@ -107,6 +108,18 @@ data class Game (
             players[index].fields[position] = ClientInfo.chosenCard
             ClientInfo.chosenCard = cardToBeChanged
             ClientInfo.chosenCard.reveal()
+        }
+    }
+
+    fun revealAllCards() {
+        for(player in players)
+            for(card in player.fields)
+                card.reveal()
+    }
+
+    fun calculateScores() {
+        for(player in players) {
+            player.calculateScore()
         }
     }
 }

@@ -23,6 +23,11 @@
             android:name=".activities.GameActivity"
             android:screenOrientation="landscape">
         </activity>
+
+        <activity
+            android:name=".activities.ResultActivity"
+            android:screenOrientation="landscape">
+        </activity>
         <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="landscape"
