@@ -131,17 +131,17 @@ class GameActivity : AppCompatActivity() {
             currentState.setState(ChoosingDeck())
             if(!game.players[game.getCurrentPlayerIndex()].isRevealedAny())
                 currentState.setState(RevealFirstCard())
-        }
-        if(game.isFinished) {
-            Log.d("GameActivity", "State - reveal mirrors")
-            currentState.setState(RevealMirrors())
-            if(game.players[game.getCurrentPlayerIndex()].fields.all {card ->
-                    card.value != -1
-                }) {
-                for(i in game.players[game.getCurrentPlayerIndex()].fields)
-                    Log.d("GameActivity", "value - ${i.value}")
-                Log.d("GameActivity", "State - end turn")
-                currentState.setState(EndTurn())
+            if(game.isFinished) {
+                Log.d("GameActivity", "State - reveal mirrors")
+                currentState.setState(RevealMirrors())
+                if(game.players[game.getCurrentPlayerIndex()].fields.all {card ->
+                        card.value != -1
+                    }) {
+                    for(i in game.players[game.getCurrentPlayerIndex()].fields)
+                        Log.d("GameActivity", "value - ${i.value}")
+                    Log.d("GameActivity", "State - end turn")
+                    currentState.setState(EndTurn())
+                }
             }
         }
         for (player in game.players) {
