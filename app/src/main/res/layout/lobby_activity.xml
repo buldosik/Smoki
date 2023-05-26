@@ -9,45 +9,52 @@
         android:id="@+id/lobbyView"
         android:layout_width="732dp"
         android:layout_height="wrap_content"
+        android:padding="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.402"
-        tools:itemCount="5" />
+
+        tools:itemCount="5"/>
 
     <Button
         android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="startGame"
+        android:backgroundTint="@color/white"
         android:text="Start"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.857"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lobbyView"
-        app:layout_constraintVertical_bias="0.779" />
-
-    <Button
-        android:id="@+id/cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="leaveLobby"
-        android:text="Leave"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lobbyView"
-        app:layout_constraintVertical_bias="0.777" />
+        app:layout_constraintVertical_bias="0.678" />
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="91dp"
+        android:layout_height="46dp"
+        android:onClick="leaveLobby"
+        android:backgroundTint="@color/white"
+        android:text="Leave"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/lobbyView"
+        app:layout_constraintEnd_toStartOf="@+id/gameCodeTV"
+        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.087" />
 
     <TextView
         android:id="@+id/gameCodeTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Code: "
+        android:text="Parties' code: "
+        android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/lobbyView"
         app:layout_constraintEnd_toEndOf="parent"

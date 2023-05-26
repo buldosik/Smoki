@@ -25,5 +25,6 @@ class CardManager {
             game.stirDeck2.removeAt(game.stirDeck2.size - 1)
             return card
         }
+
     }
 }
