@@ -14,13 +14,15 @@
         android:hint="Entry your room code"
         android:inputType="text"
         android:maxLines="1"
+        android:text="1234"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.138" />
+        app:layout_constraintVertical_bias="0.138"
+        tools:text="1234" />
 
     <Button
         android:id="@+id/create"

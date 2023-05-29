@@ -5,71 +5,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/stir1"
-        android:layout_width="75dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="8dp"
-        android:src="@drawable/close_image_vert"
-        app:layout_constraintBottom_toTopOf="@+id/hintCard"
-        app:layout_constraintStart_toEndOf="@+id/deck"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/player5"
-        android:layout_width="231dp"
-        android:layout_height="174dp"
+        android:layout_width="198dp"
+        android:layout_height="198dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.126" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/player4"
-        android:layout_width="231dp"
-        android:layout_height="174dp"
+        android:layout_width="198dp"
+        android:layout_height="198dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/player5"
-        app:layout_constraintVertical_bias="0.939" />
+        app:layout_constraintVertical_bias="1" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/player3"
-        android:layout_width="231dp"
-        android:layout_height="174dp"
+        android:layout_width="198dp"
+        android:layout_height="198dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/player4"
-        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/player2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.991" />
+        app:layout_constraintVertical_bias="1" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/player2"
-        android:layout_width="231dp"
-        android:layout_height="174dp"
+        android:layout_width="198dp"
+        android:layout_height="198dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.002"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.99" />
+        app:layout_constraintVertical_bias="1" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/player1"
-        android:layout_width="231dp"
-        android:layout_height="174dp"
+        android:layout_width="198dp"
+        android:layout_height="198dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.126"
+        app:layout_constraintVertical_bias="0.009"
         tools:ignore="MissingConstraints" />
 
     <ImageView
@@ -79,7 +68,7 @@
         android:src="@drawable/close_image_vert"
         app:layout_constraintBottom_toTopOf="@+id/player3"
         app:layout_constraintEnd_toStartOf="@+id/player5"
-        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintHorizontal_bias="0.161"
         app:layout_constraintStart_toEndOf="@+id/player1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.495"
@@ -88,14 +77,40 @@
     <ImageView
         android:id="@+id/stir2"
         android:layout_width="75dp"
-        android:layout_height="100dp"
+        android:layout_height="115dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/close_image_vert"
         app:layout_constraintBottom_toTopOf="@+id/hintCard"
         app:layout_constraintEnd_toStartOf="@+id/player5"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toEndOf="@+id/stir1"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <ImageView
+        android:id="@+id/hintCard"
+        android:layout_width="50dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="13dp"
+        app:layout_constraintBottom_toTopOf="@+id/player3"
+        app:layout_constraintEnd_toEndOf="@+id/stir2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/stir1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/close_image_vert" />
+
+    <ImageView
+        android:id="@+id/stir1"
+        android:layout_width="75dp"
+        android:layout_height="115dp"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/close_image_vert"
+        app:layout_constraintBottom_toTopOf="@+id/hintCard"
+        app:layout_constraintStart_toEndOf="@+id/deck"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/namePlayer1"
@@ -103,12 +118,12 @@
         android:layout_height="wrap_content"
         android:text="Player1"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/player1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.123"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toBottomOf="@+id/player1"
+        app:layout_constraintEnd_toEndOf="@+id/player1"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/player1"
+        app:layout_constraintTop_toTopOf="@+id/player1"
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/namePlayer5"
@@ -116,12 +131,12 @@
         android:layout_height="wrap_content"
         android:text="Player5"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/player5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.881"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toBottomOf="@+id/player5"
+        app:layout_constraintEnd_toEndOf="@+id/player5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/player5"
+        app:layout_constraintTop_toTopOf="@+id/player5"
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/namePlayer2"
@@ -129,12 +144,12 @@
         android:layout_height="wrap_content"
         android:text="Player2"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/player2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.123"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/player1"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/player2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/player2"
+        app:layout_constraintTop_toTopOf="@+id/player2"
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/namePlayer3"
@@ -142,12 +157,12 @@
         android:layout_height="wrap_content"
         android:text="Player3"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/player3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toBottomOf="@+id/player3"
+        app:layout_constraintEnd_toEndOf="@+id/player3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/player3"
+        app:layout_constraintTop_toTopOf="@+id/player3"
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/namePlayer4"
@@ -155,22 +170,21 @@
         android:layout_height="wrap_content"
         android:text="Player4"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/player4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.881"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/player5"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toBottomOf="@+id/player4"
+        app:layout_constraintEnd_toEndOf="@+id/player4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/player4"
+        app:layout_constraintTop_toTopOf="@+id/player4"
+        app:layout_constraintVertical_bias="0.5" />
 
-    <ImageView
-        android:id="@+id/hintCard"
-        android:layout_width="60dp"
-        android:layout_height="73dp"
-        android:layout_marginBottom="28dp"
-        app:layout_constraintBottom_toTopOf="@+id/player3"
-        app:layout_constraintEnd_toEndOf="@+id/stir2"
-        app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toStartOf="@+id/stir1"
-        app:srcCompat="@drawable/close_image_vert" />
+    <ImageButton
+        android:id="@+id/NicknamesReveal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="changeVisibilityPlayersNicknames"
+        app:layout_constraintStart_toEndOf="@+id/player1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_remove_red_eye_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

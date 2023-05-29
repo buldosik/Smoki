@@ -5,9 +5,7 @@ import android.content.Intent
 import android.graphics.drawable.*
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +21,8 @@ import com.example.projectam.states.EndTurn
 import com.example.projectam.states.GameStateContext
 import com.example.projectam.states.RevealFirstCard
 import com.example.projectam.utils.*
+import java.lang.Float.max
+import kotlin.math.min
 
 class GameActivity : AppCompatActivity() {
     private var views: MutableList<RecyclerView> = mutableListOf()
@@ -32,6 +32,11 @@ class GameActivity : AppCompatActivity() {
     private lateinit var stir1IV: ImageView
     private lateinit var stir2IV: ImageView
 
+    private  var nicknamesVisibility: Boolean = false
+
+    private lateinit var scaleGestureDetector: ScaleGestureDetector
+    private var scaleFactor = 1.0f
+
     companion object {
         @SuppressLint("StaticFieldLeak")
         lateinit var currentState: GameStateContext
@@ -39,43 +44,43 @@ class GameActivity : AppCompatActivity() {
         lateinit var hintCardIV: ImageView
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        // Sample zoom
         val view = layoutInflater.inflate(R.layout.game_activity, null)
+        scaleGestureDetector = ScaleGestureDetector(this, ScaleListener(view))
         setContentView(view)
-        // Added sample zoom
-        // ToDo do it in some nice way
-        /*view.setOnClickListener(object : View.OnClickListener {
-            var zoomFactor = 2f
-            var zoomedOut = false
-            override fun onClick(v: View) {
-                if (zoomedOut) {
-                    v.scaleX = 1f
-                    v.scaleY = 1f
-                    zoomedOut = false
-                } else {
-                    v.scaleX = zoomFactor
-                    v.scaleY = zoomFactor
-                    zoomedOut = true
-                }
-            }
-        })*/
 
         initViews()
         currentState = GameStateContext(updatePlayer, deckIV, stir1IV, stir2IV, hintCardIV, this)
-        //updateAdapters(Game())
         createListener()
     }
-    private val updatePlayer = fun() {
-        for (player in ClientInfo.game.players) {
-            if (player.id == ClientInfo.id) {
-                views[ClientInfo.id].adapter = GameAdapter(this, player.fields, currentState)
-            }
+    // region zoom
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        scaleGestureDetector.onTouchEvent(event)
+        return true
+    }
+    inner class ScaleListener(private val view: View) : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+        override fun onScale(detector: ScaleGestureDetector): Boolean {
+
+            scaleFactor *= detector.scaleFactor
+            scaleFactor = max(0.5f, min(scaleFactor,4.0f))
+
+            view.pivotX = detector.focusX
+            view.pivotY = detector.focusY
+
+            view.scaleX = scaleFactor
+            view.scaleY = scaleFactor
+
+            return true
         }
     }
+    // endregion zoom
 
+    // region firebase
     private fun createListener() {
         FirebaseManager.initGameUpdaterListener(ClientInfo.gameCode, updateAdapters, this)
     }
@@ -87,6 +92,7 @@ class GameActivity : AppCompatActivity() {
         super.onPause()
         FirebaseManager.deleteGameUpdater(ClientInfo.gameCode)
     }
+    // endregion firebase
 
     private fun initViews() {
         views.add(findViewById(R.id.player1))
@@ -111,21 +117,23 @@ class GameActivity : AppCompatActivity() {
         hintCardIV = findViewById(R.id.hintCard)
     }
 
+    private val updatePlayer = fun() {
+        for (player in ClientInfo.game.players) {
+            if (player.id == ClientInfo.id) {
+                views[ClientInfo.id].adapter = GameAdapter(this, player.fields, currentState)
+            }
+        }
+    }
 
     private val updateAdapters = @SuppressLint("SetTextI18n")
     fun(game: Game) {
+        ClientInfo.game = game
         if(game.isCalculatedScores) {
-            ClientInfo.game = game
             startActivity(Intent(this, ResultActivity::class.java))
             return
         }
-        ClientInfo.game = game
 
         val playersId: ArrayList<Int> = arrayListOf()
-
-        for (i in 0 until 5) {
-            views[i].visibility = View.VISIBLE
-        }
 
         if(game.playerTurn == ClientInfo.id){
             currentState.setState(ChoosingDeck())
@@ -144,6 +152,10 @@ class GameActivity : AppCompatActivity() {
                 }
             }
         }
+
+        for (i in 0 until 5) {
+            views[i].visibility = View.VISIBLE
+        }
         for (player in game.players) {
             playersId.add(player.id)
             views[player.id].adapter = GameAdapter(this, player.fields, null)
@@ -159,13 +171,29 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
-        if(game.stirDeck1.isNotEmpty())
+        if(game.stirDeck1.isNotEmpty()) {
             stir1IV.setImageResource(ImageConverter.getImage(game.stirDeck1[game.stirDeck1.size - 1]))
-        else
+        }
+        else {
             stir1IV.setImageResource(ImageConverter.getImage(Card(0,false)))
-        if(game.stirDeck2.isNotEmpty())
+        }
+        if(game.stirDeck2.isNotEmpty()) {
             stir2IV.setImageResource(ImageConverter.getImage(game.stirDeck2[game.stirDeck2.size - 1]))
-        else
+        }
+        else {
             stir2IV.setImageResource(ImageConverter.getImage(Card(0,false)))
+        }
+    }
+
+    fun changeVisibilityPlayersNicknames(view: View) {
+        for (i in 0 until 5) {
+            if(nicknamesVisibility) {
+                names[i].visibility = View.VISIBLE
+            }
+            else {
+                names[i].visibility = View.INVISIBLE
+            }
+        }
+        nicknamesVisibility = !nicknamesVisibility
     }
 }
