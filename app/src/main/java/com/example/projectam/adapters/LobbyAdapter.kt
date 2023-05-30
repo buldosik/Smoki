@@ -1,10 +1,11 @@
-package com.example.projectam.utils
+package com.example.projectam.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectam.R
+import com.example.projectam.utils.Player
 
 class LobbyAdapter (
     private val context: Context,

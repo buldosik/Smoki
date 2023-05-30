@@ -9,6 +9,8 @@ data class Game (
     var stirDeck1: MutableList<Card> = mutableListOf(),
     var stirDeck2: MutableList<Card> = mutableListOf(),
     var isStarted: Boolean = false,
+    var isFinished: Boolean = false,
+    var isCalculatedScores: Boolean = false,
     var playerTurn: Int = 0
         ) {
     fun addPlayer(player: Player) {
@@ -26,11 +28,11 @@ data class Game (
     }
 
     fun createNewDeck() {
-        val dragons = listOf(-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 10)
-        //add dragons
-        for (dragon in dragons) {
+        val cardsValues = listOf(-2, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 10, -1)
+        //add cards
+        for (i in cardsValues) {
             repeat(4) {
-                val card = Card(dragon, false)
+                val card = Card(i, false)
                 cardDeck.add(card)
             }
         }
@@ -39,35 +41,34 @@ data class Game (
     private fun shuffle(deck: MutableList<Card>) {
         deck.shuffle()
     }
+    //leaves top cards in stirs decks. All the other cards go in cardDeck
+    fun stirReset() {
+        val card1 = stirDeck1[stirDeck1.size - 1]
+        stirDeck1.removeAt(stirDeck1.size - 1)
+        val card2 = stirDeck2[stirDeck2.size - 1]
+        stirDeck2.removeAt(stirDeck2.size - 1)
+        val stir = mutableListOf<Card>()
+        stirDeck1.forEach { card -> card.isRevealed = false }
+        stirDeck2.forEach { card -> card.isRevealed = false }
+        stir.addAll(stirDeck1)
+        stir.addAll(stirDeck2)
+        shuffle(stir)
+        stirDeck1.clear()
+        stirDeck1.add(card1)
+        stirDeck2.clear()
+        stirDeck2.add(card2)
+        stir.addAll(cardDeck)
+        cardDeck.clear()
+        cardDeck.addAll(stir)
+    }
 
-    private fun stirReset(stir: MutableList<Card>) {
-        // leaves top cards in stir decks. All the other cards go in cardDeck
-        while (stir.size > 1) {
-            cardDeck.add(stir[0])
-            stir.removeAt(0)
-        }
-    }
-    fun addCardToStir1(card: Card){
+
+    fun addToStir1(card: Card) {
         stirDeck1.add(card)
     }
-    fun addCardToStir2(card: Card){
-        stirDeck1.add(card)
-    }
-    fun getCardFromCardDeck(isRevealed: Boolean = false): Card {
-        // Return top card from cardDeck
-        if(cardDeck.getOrNull(cardDeck.size - 1) == null){
-            stirReset(stirDeck1)
-            stirReset(stirDeck2)
-            shuffle(cardDeck)
-        }
-        return cardDeck[cardDeck.size - 1]
-    }
-    fun getCardFromStir1(): Card {
-        //  Return top card from stir1
-        return stirDeck1[stirDeck1.size - 1]
-    }
-    fun getCardFromStir2(): Card {
-        return stirDeck2[stirDeck2.size - 1]
+
+    fun addToStir2(card: Card) {
+        stirDeck2.add(card)
     }
 
     fun changePlayerTurn() {
@@ -82,7 +83,14 @@ data class Game (
         }
     }
 
-    fun checkIsFirstAction() : Boolean {
+    fun getCurrentPlayerIndex() : Int {
+        for (i in 0 until players.size)
+            if (players[i].id == ClientInfo.id)
+                return i
+        return -1
+    }
+
+    fun isRevealed(): Boolean {
         val flag = players.any { player ->
             player.fields.all { card ->
                 card.isRevealed
@@ -90,36 +98,28 @@ data class Game (
         }
         return flag
     }
-    //reveals all players cards
-    fun revevealAllPlayersCards(){
-        for(player in players){
-            for(card in player.fields){
-                if(!card.isRevealed){
-                    card.reveal()
-                }
-            }
+    fun swapTen(position: Int) {
+        val startIndex = getCurrentPlayerIndex()
+        var cardToBeChanged: Card
+
+        for (i in 1 until players.size) {
+            val index = (startIndex + i) % players.size
+            cardToBeChanged = players[index].fields[position]
+            players[index].fields[position] = ClientInfo.chosenCard
+            ClientInfo.chosenCard = cardToBeChanged
+            ClientInfo.chosenCard.reveal()
         }
     }
-    fun swapTen(cardTen: Card, cardsPosition: Int, playersId: Int){
-        //the idea is to go from an el: a -> 0 from 4 -> a+1
-        var cardToBeChanged = cardTen
-        var temporaryCard = players[playersId].fields[cardsPosition]
-        // goes for example from [2->1->0]
-        for (id in playersId downTo 0){
-            if(!players[id].isConnected) continue;
-            players[id].fields[cardsPosition] = cardToBeChanged
-            cardToBeChanged = temporaryCard
-        }
-        // goes f.ex from [4->3->2)
-        for(id in players.size - 1 downTo playersId+1){
-            if(!players[id].isConnected) continue;
-            players[id].fields[cardsPosition] = cardToBeChanged
-            cardToBeChanged = temporaryCard
-        }
+
+    fun revealAllCards() {
+        for(player in players)
+            for(card in player.fields)
+                card.reveal()
     }
-    fun swapNine(cardsPositionFrom: Int, cardsPositionTo: Int, playersId: Int) {
-        val temporary = players[playersId].fields[cardsPositionFrom]
-        players[playersId].fields[cardsPositionFrom] = players[playersId].fields[cardsPositionTo]
-        players[playersId].fields[cardsPositionTo] = temporary
+
+    fun calculateScores() {
+        for(player in players) {
+            player.calculateScore()
+        }
     }
 }

@@ -3,15 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <EditText
         android:id="@+id/roomCodeET"
         android:layout_width="420dp"
         android:layout_height="93dp"
-        android:hint="Entry your room code"
+        android:hint="@string/input_code"
         android:inputType="text"
         android:maxLines="1"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -24,7 +26,7 @@
         android:layout_width="145dp"
         android:layout_height="78dp"
         android:onClick="createLobby"
-        android:text="Create"
+        android:text="@string/button_create_lobby"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.331"
@@ -37,7 +39,7 @@
         android:layout_width="145dp"
         android:layout_height="78dp"
         android:onClick="attemptToConnectToLobby"
-        android:text="Connect"
+        android:text="@string/button_connect_lobby"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.697"

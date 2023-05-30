@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectam.ClientInfo
 import com.example.projectam.FirebaseManager
 import com.example.projectam.R
+import com.example.projectam.adapters.LobbyAdapter
 import com.example.projectam.utils.Game
-import com.example.projectam.utils.LobbyAdapter
 import com.example.projectam.utils.Player
 
 class LobbyActivity : AppCompatActivity() {
@@ -26,6 +28,8 @@ class LobbyActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.lobby_activity)
         // Init all widgets
         recyclerView = findViewById(R.id.lobbyView)
@@ -54,8 +58,12 @@ class LobbyActivity : AppCompatActivity() {
         FirebaseManager.deleteLobbyUpdater(ClientInfo.gameCode)
     }
 
-    private val updateAdapter = fun(players: MutableList<Player>) {
-        recyclerView.adapter = LobbyAdapter(this, players)
+    private val updateAdapter = fun(game: Game) {
+        if(game.isStarted) {
+            startActivity(Intent(this, GameActivity::class.java))
+            return
+        }
+        recyclerView.adapter = LobbyAdapter(this, game.players)
     }
 
     fun startGame(view: View) {
