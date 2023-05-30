@@ -17,7 +17,7 @@ class ResultViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bindView(player: Player?) {
         if (player != null) {
             playerView.findViewById<TextView>(R.id.playerID).text = player.username
-            playerView.findViewById<TextView>(R.id.score).text = player.score.toString()
+            playerView.findViewById<TextView>(R.id.info).text = player.score.toString()
         } else {
             playerView.findViewById<TextView>(R.id.playerID).text = "Empty"
         }

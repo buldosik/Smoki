@@ -17,7 +17,7 @@ class LobbyViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bindView(player: Player?) {
         if (player != null) {
             playerView.findViewById<TextView>(R.id.playerID).text = player.username
-            playerView.findViewById<TextView>(R.id.status).text = "Connected"
+            playerView.findViewById<TextView>(R.id.info).text = "Connected"
         } else {
             playerView.findViewById<TextView>(R.id.playerID).text = "Empty"
         }

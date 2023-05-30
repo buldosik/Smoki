@@ -1,3 +1,21 @@
 <resources>
+    <!-- Base -->
     <string name="app_name">ProjectAM</string>
+
+    <!-- Login activity. -->
+    <string name="game_name">Smoki</string>
+    <string name="input_username">Entry your user name</string>
+    <string name="button_play">Play</string>
+
+    <!-- Create/Connect activity. -->
+    <string name="input_code">Entry your room code</string>
+    <string name="button_create_lobby">Create</string>
+    <string name="button_connect_lobby">Connect</string>
+
+    <!-- Lobby activity. -->
+
+    <!-- Game activity. -->
+    <string name="handle_card_text">handle card</string>
+
+    <!-- Result activity. -->
 </resources>

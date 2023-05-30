@@ -6,8 +6,8 @@
 
     <LinearLayout
         android:id="@+id/playerLayout"
-        android:layout_width="727dp"
-        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@drawable/cell_border"
         tools:layout_editor_absoluteX="1dp"
@@ -22,7 +22,7 @@
             android:text="Empty" />
 
         <TextView
-            android:id="@+id/status"
+            android:id="@+id/info"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"

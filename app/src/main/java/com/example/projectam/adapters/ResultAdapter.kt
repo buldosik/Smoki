@@ -14,7 +14,7 @@ class ResultAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.result_cell, parent, false)
+        val view = inflater.inflate(R.layout.lobby_cell, parent, false)
         return ResultViewHolder(view)
     }
 

@@ -6,136 +6,88 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/player5"
-        android:layout_width="198dp"
-        android:layout_height="198dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:id="@+id/player1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalMiddleOfScreen"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/player4"
-        android:layout_width="198dp"
-        android:layout_height="198dp"
+        android:id="@+id/player2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/player5"
+        app:layout_constraintTop_toTopOf="@+id/horizontalMiddleOfScreen"
         app:layout_constraintVertical_bias="1" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/player3"
-        android:layout_width="198dp"
-        android:layout_height="198dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2.5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="2.5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/player4"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/player2"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/horizontalMiddleOfScreen"
         app:layout_constraintVertical_bias="1" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/player2"
-        android:layout_width="198dp"
-        android:layout_height="198dp"
+        android:id="@+id/player4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="@+id/horizontalMiddleOfScreen"
         app:layout_constraintVertical_bias="1" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/player1"
-        android:layout_width="198dp"
-        android:layout_height="198dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/player5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/horizontalMiddleOfScreen"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.009"
-        tools:ignore="MissingConstraints" />
-
-    <ImageView
-        android:id="@+id/deck"
-        android:layout_width="80dp"
-        android:layout_height="120dp"
-        android:src="@drawable/close_image_vert"
-        app:layout_constraintBottom_toTopOf="@+id/player3"
-        app:layout_constraintEnd_toStartOf="@+id/player5"
-        app:layout_constraintHorizontal_bias="0.161"
-        app:layout_constraintStart_toEndOf="@+id/player1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.495"
-        tools:ignore="MissingConstraints" />
-
-    <ImageView
-        android:id="@+id/stir2"
-        android:layout_width="75dp"
-        android:layout_height="115dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/close_image_vert"
-        app:layout_constraintBottom_toTopOf="@+id/hintCard"
-        app:layout_constraintEnd_toStartOf="@+id/player5"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toEndOf="@+id/stir1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
-
-    <ImageView
-        android:id="@+id/hintCard"
-        android:layout_width="50dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="13dp"
-        app:layout_constraintBottom_toTopOf="@+id/player3"
-        app:layout_constraintEnd_toEndOf="@+id/stir2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/stir1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/close_image_vert" />
-
-    <ImageView
-        android:id="@+id/stir1"
-        android:layout_width="75dp"
-        android:layout_height="115dp"
-        android:layout_marginStart="20dp"
-        android:src="@drawable/close_image_vert"
-        app:layout_constraintBottom_toTopOf="@+id/hintCard"
-        app:layout_constraintStart_toEndOf="@+id/deck"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/namePlayer1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Player1"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_size"
         app:layout_constraintBottom_toBottomOf="@+id/player1"
         app:layout_constraintEnd_toEndOf="@+id/player1"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/player1"
         app:layout_constraintTop_toTopOf="@+id/player1"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <TextView
-        android:id="@+id/namePlayer5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Player5"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/player5"
-        app:layout_constraintEnd_toEndOf="@+id/player5"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/player5"
-        app:layout_constraintTop_toTopOf="@+id/player5"
         app:layout_constraintVertical_bias="0.5" />
 
     <TextView
@@ -177,14 +129,141 @@
         app:layout_constraintTop_toTopOf="@+id/player4"
         app:layout_constraintVertical_bias="0.5" />
 
-    <ImageButton
-        android:id="@+id/NicknamesReveal"
+    <TextView
+        android:id="@+id/namePlayer5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Player5"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/player5"
+        app:layout_constraintEnd_toEndOf="@+id/player5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/player5"
+        app:layout_constraintTop_toTopOf="@+id/player5"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <ImageView
+        android:id="@+id/deck"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="2.5dp"
+        android:src="@drawable/close_image_vert"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalMiddleOfScreen"
+        app:layout_constraintDimensionRatio="2:3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.55"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/stir1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/close_image_vert"
+        app:layout_constraintBottom_toTopOf="@+id/cardDivider"
+        app:layout_constraintDimensionRatio="2:3"
+        app:layout_constraintEnd_toStartOf="@+id/stirSeparator"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/stir2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/close_image_vert"
+        app:layout_constraintBottom_toTopOf="@+id/cardDivider"
+        app:layout_constraintDimensionRatio="2:3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="@+id/stirSeparator"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/hintCard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalMiddleOfScreen"
+        app:layout_constraintDimensionRatio="2:3"
+        app:layout_constraintEnd_toEndOf="@+id/stir2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/stir1"
+        app:layout_constraintTop_toTopOf="@+id/cardDivider"
+        app:srcCompat="@drawable/close_image_vert" />
+
+    <ImageButton
+        android:id="@+id/NicknamesReveal"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
         android:backgroundTint="#00FFFFFF"
         android:onClick="changeVisibilityPlayersNicknames"
         app:layout_constraintStart_toEndOf="@+id/player1"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_remove_red_eye_24" />
+        app:srcCompat="@drawable/baseline_remove_red_eye_24"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalMiddleOfScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/cardDivider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/stirSeparator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.555" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.66666" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.44334" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33333" />
+
+    <TextView
+        android:id="@+id/handeCardTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/handle_card_text"
+        app:layout_constraintBottom_toBottomOf="@+id/hintCard"
+        app:layout_constraintEnd_toEndOf="@+id/hintCard"
+        app:layout_constraintStart_toStartOf="@+id/hintCard"
+        app:layout_constraintTop_toTopOf="@+id/hintCard" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

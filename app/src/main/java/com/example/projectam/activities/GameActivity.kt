@@ -21,6 +21,7 @@ import com.example.projectam.states.EndTurn
 import com.example.projectam.states.GameStateContext
 import com.example.projectam.states.RevealFirstCard
 import com.example.projectam.utils.*
+import org.w3c.dom.Text
 import java.lang.Float.max
 import kotlin.math.min
 
@@ -37,12 +38,16 @@ class GameActivity : AppCompatActivity() {
     private lateinit var scaleGestureDetector: ScaleGestureDetector
     private var scaleFactor = 1.0f
 
+    private var width: Int = 0
+    private var height: Int = 0
+
     companion object {
         @SuppressLint("StaticFieldLeak")
         lateinit var currentState: GameStateContext
         @SuppressLint("StaticFieldLeak")
         lateinit var hintCardIV: ImageView
     }
+    private lateinit var hintCardTV: TextView
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +58,8 @@ class GameActivity : AppCompatActivity() {
         val view = layoutInflater.inflate(R.layout.game_activity, null)
         scaleGestureDetector = ScaleGestureDetector(this, ScaleListener(view))
         setContentView(view)
+        width = view.width
+        height = view.height
 
         initViews()
         currentState = GameStateContext(updatePlayer, deckIV, stir1IV, stir2IV, hintCardIV, this)
@@ -115,6 +122,7 @@ class GameActivity : AppCompatActivity() {
         stir1IV = findViewById(R.id.stir1)
         stir2IV = findViewById(R.id.stir2)
         hintCardIV = findViewById(R.id.hintCard)
+        hintCardTV = findViewById(R.id.handeCardTV)
     }
 
     private val updatePlayer = fun() {
@@ -187,13 +195,15 @@ class GameActivity : AppCompatActivity() {
 
     fun changeVisibilityPlayersNicknames(view: View) {
         for (i in 0 until 5) {
-            if(nicknamesVisibility) {
+            if(nicknamesVisibility)
                 names[i].visibility = View.VISIBLE
-            }
-            else {
+            else
                 names[i].visibility = View.INVISIBLE
-            }
         }
+        if(nicknamesVisibility)
+            hintCardTV.visibility = View.VISIBLE
+        else
+            hintCardTV.visibility = View.INVISIBLE
         nicknamesVisibility = !nicknamesVisibility
     }
 }
