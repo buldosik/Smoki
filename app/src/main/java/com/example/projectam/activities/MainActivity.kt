@@ -37,6 +37,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun isValidName() : Boolean {
         val name = usernameET.text
-        return name.all{ it.isLetter() || it.isDigit() } && name.length in 3..6 && banWordList.isValidName(name.toString())
+        return name.all{ it.isLetter() || it.isDigit() } && name.length in 3..16 && banWordList.isValidName(name.toString())
     }
 }
