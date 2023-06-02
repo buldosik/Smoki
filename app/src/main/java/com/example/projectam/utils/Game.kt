@@ -1,10 +1,8 @@
 package com.example.projectam.utils
 
-import com.example.projectam.ClientInfo
-
 data class Game (
     var code: String = "",
-    var players: MutableList<Player> = mutableListOf(),
+    var players: MutableList<Player?> = mutableListOf(),
     var cardDeck: MutableList<Card> = mutableListOf(),
     var stirDeck1: MutableList<Card> = mutableListOf(),
     var stirDeck2: MutableList<Card> = mutableListOf(),

@@ -31,6 +31,8 @@ class FirebaseManager {
                         connectToLobbyActivity()
                         return
                     }
+                    // ToDo probably that need a fix
+
                     if(!game.isCalculatedScores) {
                         if(game.isStarted) {
                             Toast.makeText(context, "That lobby is active", Toast.LENGTH_SHORT).show()
@@ -56,10 +58,10 @@ class FirebaseManager {
         }
         fun createLobby(code: String, player: Player) {
             val game = Game(code = code)
+            // Add playerSlots
+            GameManager.clearPlayerList(game)
             // Add host player
             GameManager.addPlayer(game, player)
-            // Set that client as player 0 (host)
-            ClientInfo.id = 0
             // Set lobby at firebase
             database.getReference(code).setValue(game)
         }
@@ -95,7 +97,7 @@ class FirebaseManager {
 
         // region Lobby Activity
         lateinit var postListenerLobby: ValueEventListener
-        fun initLobbyUpdaterListener(code: String, updateAdapter: (game: Game) -> Unit, context: Context) {
+        fun initLobbyUpdaterListener(updateAdapter: (game: Game) -> Unit, context: Context) {
             postListenerLobby = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val post = snapshot.getValue<Game>()
@@ -131,7 +133,7 @@ class FirebaseManager {
 
         // region Game Activity
         lateinit var postListenerGame: ValueEventListener
-        fun initGameUpdaterListener(code: String, updateAdapter: (game: Game) -> Unit, context: Context) {
+        fun initGameUpdaterListener(updateAdapter: (game: Game) -> Unit, context: Context) {
             postListenerGame = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val post = snapshot.getValue<Game>()
@@ -213,13 +215,10 @@ class FirebaseManager {
                     GameManager.createNewDeck(game)
                     game.stirDeck1.add(GameManager.getCardFromCardDeck(game, true))
                     game.stirDeck2.add(GameManager.getCardFromCardDeck(game, true))
-                    for(i in 0 until game.players.size) {
-                        if(game.players[i] == null) {
-                            game.players.removeAt(i)
-                        }
-                    }
                     for(j in 1..6) {
                         for(i in game.players) {
+                            if(i == null)
+                                continue
                             i.fields.add(GameManager.getCardFromCardDeck(game))
                         }
                     }

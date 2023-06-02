@@ -16,7 +16,7 @@ class EndTurn : GameState {
             ClientInfo.game.isFinished = true
             GameManager.revealAllCards(ClientInfo.game)
         }
-        if(ClientInfo.game.isFinished && ClientInfo.game.players.all { player ->
+        if(ClientInfo.game.isFinished && ClientInfo.game.players.filterNotNull().all { player ->
                 player.fields.all { card ->
                     card.value != -1
                 }

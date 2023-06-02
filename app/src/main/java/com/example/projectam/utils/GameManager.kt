@@ -1,13 +1,19 @@
 package com.example.projectam.utils
 
 import com.example.projectam.ClientInfo
-import com.example.projectam.FirebaseManager
 
 class GameManager {
     companion object {
+        fun clearPlayerList(game: Game) {
+            game.players.clear()
+            game.players.add(null)
+            game.players.add(null)
+            game.players.add(null)
+            game.players.add(null)
+            game.players.add(null)
+        }
         fun addPlayer(game: Game, player: Player) {
-            var id = 0
-            while(id < game.players.size) {
+            for(id in 0 until game.players.size) {
                 if(game.players[id] == null) {
                     // Set for client id
                     ClientInfo.id = id
@@ -16,14 +22,10 @@ class GameManager {
                     game.players[id] = player
                     return
                 }
-                if(id != game.players[id].id)
-                    break
-                id++
             }
-            // Set for client id
-            ClientInfo.id = id
+            ClientInfo.id = game.players.size
             // Set for server id
-            player.id = id
+            player.id = game.players.size
             game.players.add(player)
         }
 
@@ -72,26 +74,28 @@ class GameManager {
         }
 
         fun changePlayerTurn(game: Game) {
-            for(i in 0 until game.players.size) {
-                if(game.players[i].id != game.playerTurn)
+            for(i in 1 until game.players.size) {
+                if(game.players[(game.playerTurn + i) % game.players.size] == null)
                     continue
-                game.playerTurn = if(i == game.players.size - 1)
-                    game.players[0].id
-                else
-                    game.players[i + 1].id
+                game.playerTurn = (game.playerTurn + i) % game.players.size
                 break
             }
         }
 
         fun getCurrentPlayerIndex(game: Game) : Int {
-            for (i in 0 until game.players.size)
-                if (game.players[i].id == ClientInfo.id)
+            for (i in 0 until game.players.size) {
+                if(game.players[i] == null) {
+                    continue
+                }
+                if (game.players[i]!!.id == ClientInfo.id) {
                     return i
+                }
+            }
             return -1
         }
 
         fun isRevealed(game: Game): Boolean {
-            val flag = game.players.any { player ->
+            val flag = game.players.filterNotNull().any { player ->
                 player.fields.all { card ->
                     card.isRevealed
                 }
@@ -101,24 +105,33 @@ class GameManager {
         fun swapTen(game: Game, position: Int) {
             val startIndex = getCurrentPlayerIndex(game)
             var cardToBeChanged: Card
+            ClientInfo.chosenCard.reveal()
 
             for (i in 1 until game.players.size) {
                 val index = (startIndex + i) % game.players.size
-                cardToBeChanged = game.players[index].fields[position]
-                game.players[index].fields[position] = ClientInfo.chosenCard
+                if(game.players[index] == null)
+                    continue
+                cardToBeChanged = game.players[index]!!.fields[position]
+                game.players[index]!!.fields[position] = ClientInfo.chosenCard
                 ClientInfo.chosenCard = cardToBeChanged
                 ClientInfo.chosenCard.reveal()
             }
         }
 
         fun revealAllCards(game: Game) {
-            for(player in game.players)
-                for(card in player.fields)
+            for(player in game.players) {
+                if(player == null)
+                    continue
+                for (card in player.fields) {
                     card.reveal()
+                }
+            }
         }
 
         fun calculateScores(game: Game) {
             for(player in game.players) {
+                if(player == null)
+                    continue
                 player.calculateScore()
             }
         }
@@ -132,15 +145,11 @@ class GameManager {
             return card
         }
         fun getCardFromStir1(game: Game): Card {
-            if(game.stirDeck1.isEmpty())
-                return Card(0,true)
             val card = game.stirDeck1[game.stirDeck1.size - 1]
             game.stirDeck1.removeAt(game.stirDeck1.size - 1)
             return card
         }
         fun getCardFromStir2(game: Game): Card {
-            if(game.stirDeck2.isEmpty())
-                return Card(0,true)
             val card = game.stirDeck2[game.stirDeck2.size - 1]
             game.stirDeck2.removeAt(game.stirDeck2.size - 1)
             return card

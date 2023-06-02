@@ -10,6 +10,7 @@ class ClientInfo {
         var gameCode: String = ""
         var game: Game = Game()
         var chosenCard: Card = Card(-10, false)
+        const val gameSize: Int = 5
 
         fun init() {
             id = -1
