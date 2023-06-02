@@ -1,6 +1,6 @@
 <resources>
     <!-- Base -->
-    <string name="app_name">ProjectAM</string>
+    <string name="app_name">Smoki</string>
 
     <!-- Login activity. -->
     <string name="game_name">Smoki</string>
