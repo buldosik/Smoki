@@ -3,6 +3,7 @@ package com.example.projectam.states
 import android.util.Log
 import com.example.projectam.ClientInfo
 import com.example.projectam.activities.GameActivity
+import com.example.projectam.utils.GameManager
 import kotlin.math.abs
 
 class RevealMirrors : GameState {
@@ -15,12 +16,12 @@ class RevealMirrors : GameState {
     var firstClick: Int = -1
 
     override fun onItemClick(position: Int) {
-        if(firstClick == -1 && ClientInfo.game.players[ClientInfo.game.getCurrentPlayerIndex()].fields[position].value == -1) {
+        if(firstClick == -1 && ClientInfo.game.players[GameManager.getCurrentPlayerIndex(ClientInfo.game)].fields[position].value == -1) {
             Log.d("RevealMirrors", "remember first card")
             firstClick = position
             return
         }
-        if(ClientInfo.game.players[ClientInfo.game.getCurrentPlayerIndex()].fields[position].value != -1 && abs(position - firstClick) != 1){
+        if(ClientInfo.game.players[GameManager.getCurrentPlayerIndex(ClientInfo.game)].fields[position].value != -1 && abs(position - firstClick) != 1){
             Log.d("RevealMirrors", "not separate card")
             return
         }

@@ -16,6 +16,9 @@
 
     <!-- Game activity. -->
     <string name="handle_card_text">handle card</string>
+    <string name="start_game_button">Start</string>
+    <string name="leave_lobby">Leave</string>
+    <string name="lobby_code">lobby code:</string>
 
     <!-- Result activity. -->
 </resources>

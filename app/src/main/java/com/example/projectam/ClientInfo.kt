@@ -11,9 +11,10 @@ class ClientInfo {
         var game: Game = Game()
         var chosenCard: Card = Card(-10, false)
 
-        fun init(code: String, name: String) {
-            username = name
-            gameCode = code
+        fun init() {
+            id = -1
+            game = Game()
+            chosenCard = Card(-10, false)
         }
     }
 }

@@ -35,6 +35,7 @@ class ResultActivity  : AppCompatActivity() {
         recyclerView.adapter = ResultAdapter(this, ClientInfo.game.players)
     }
     fun leaveLobby(view: View) {
+        FirebaseManager.deleteUser(ClientInfo.gameCode, ClientInfo.id)
         startActivity(Intent(this, ConnectActivity::class.java))
     }
 }

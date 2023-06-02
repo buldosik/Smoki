@@ -3,6 +3,7 @@ package com.example.projectam.states
 import android.util.Log
 import com.example.projectam.ClientInfo
 import com.example.projectam.utils.Card
+import com.example.projectam.utils.GameManager
 import com.example.projectam.utils.ImageConverter
 
 class ChoosingStir : GameState {
@@ -18,7 +19,7 @@ class ChoosingStir : GameState {
             ctx.stir2IV.setBackgroundResource(0)
             ctx.hintCardIV.setImageResource(ImageConverter.getImage(Card(-10, false)))
 
-            ClientInfo.game.addToStir1(ClientInfo.chosenCard)
+            GameManager.addToStir1(ClientInfo.game, ClientInfo.chosenCard)
             ctx.setState(EndTurn())
         }
         ctx.stir2IV.setOnClickListener{
@@ -30,7 +31,7 @@ class ChoosingStir : GameState {
             ctx.stir2IV.setBackgroundResource(0)
             ctx.hintCardIV.setImageResource(ImageConverter.getImage(Card(-10, false)))
 
-            ClientInfo.game.addToStir2(ClientInfo.chosenCard)
+            GameManager.addToStir2(ClientInfo.game, ClientInfo.chosenCard)
             ctx.setState(EndTurn())
         }
     }

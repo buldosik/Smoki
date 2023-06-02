@@ -26,11 +26,14 @@ class ConnectActivity : AppCompatActivity() {
         setContentView(R.layout.connect_activity)
         username = ClientInfo.username
         romeCodeET = findViewById(R.id.roomCodeET)
+        ClientInfo.init()
     }
 
     fun attemptToConnectToLobby(view: View) {
-        if(!isValidCode())
+        if(!isValidCode()) {
+            Toast.makeText(this, "Code contains specific characters", Toast.LENGTH_SHORT).show()
             return
+        }
 
         // Attempt to add new player to lobby
         FirebaseManager.connectToLobby(romeCodeET.text.toString(), Player(username = username, isConnected = true), this, connectToLobbyActivity)
@@ -42,20 +45,17 @@ class ConnectActivity : AppCompatActivity() {
             return
         }
 
-
         // Call to create lobby at firebase
-        FirebaseManager.createNewLobby(romeCodeET.text.toString(), Player(username = username, isConnected = true))
-
-        connectToLobbyActivity()
+        FirebaseManager.attemptToCreateNewLobby(this, romeCodeET.text.toString(), Player(username = username, isConnected = true), connectToLobbyActivity)
     }
 
     private val connectToLobbyActivity = fun() {
-        ClientInfo.init(romeCodeET.text.toString(), username)
+        ClientInfo.gameCode = romeCodeET.text.toString()
         startActivity(Intent(this, LobbyActivity::class.java))
     }
 
     private fun isValidCode() : Boolean {
         val code = romeCodeET.text
-        return code.all{ it.isLetter() || it.isDigit() } && code.length in 3..6 && banWordList.isValidName(code.toString())
+        return code.all{ it.isLetter() || it.isDigit() } && code.length in 2..10 && banWordList.isValidName(code.toString())
     }
 }

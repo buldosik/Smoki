@@ -4,7 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.projectam.ClientInfo
 import com.example.projectam.R
-import com.example.projectam.utils.CardManager
+import com.example.projectam.utils.GameManager
 import com.example.projectam.utils.ImageConverter
 
 class ChoosingDeck : GameState {
@@ -14,7 +14,7 @@ class ChoosingDeck : GameState {
             view.setBackgroundResource(R.drawable.image_border)
             Log.d("ChoosingDeck", "click on deck")
 
-            ClientInfo.chosenCard = CardManager.getCardFromCardDeck(ClientInfo.game)
+            ClientInfo.chosenCard = GameManager.getCardFromCardDeck(ClientInfo.game)
             ClientInfo.chosenCard.reveal()
             ctx.hintCardIV.setImageResource(ImageConverter.getImage(ClientInfo.chosenCard))
 
@@ -28,7 +28,7 @@ class ChoosingDeck : GameState {
                 view.setBackgroundResource(R.drawable.image_border)
                 Log.d("ChoosingDeck", "click on stir1")
                 ctx.setState(ChoosingField(true))
-                ClientInfo.chosenCard = CardManager.getCardFromStir1(ClientInfo.game)
+                ClientInfo.chosenCard = GameManager.getCardFromStir1(ClientInfo.game)
                 ctx.hintCardIV.setImageResource(ImageConverter.getImage(ClientInfo.chosenCard))
 
                 if (ClientInfo.game.stirDeck1.isNotEmpty()){
@@ -47,7 +47,7 @@ class ChoosingDeck : GameState {
                 Log.d("ChoosingDeck", "click on stir2")
                 view.setBackgroundResource(R.drawable.image_border)
                 ctx.setState(ChoosingField(true))
-                ClientInfo.chosenCard = CardManager.getCardFromStir2(ClientInfo.game)
+                ClientInfo.chosenCard = GameManager.getCardFromStir2(ClientInfo.game)
                 ctx.hintCardIV.setImageResource(ImageConverter.getImage(ClientInfo.chosenCard))
 
                 if (ClientInfo.game.stirDeck2.isNotEmpty()){

@@ -3,7 +3,7 @@ package com.example.projectam
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import com.example.projectam.utils.CardManager
+import com.example.projectam.utils.GameManager
 import com.example.projectam.utils.Game
 import com.example.projectam.utils.Player
 import com.google.firebase.database.*
@@ -20,10 +20,44 @@ class FirebaseManager {
             database = Firebase.database
         }
         // region Connect/Create Activity
-        fun createNewLobby(code: String, player: Player) {
+        fun attemptToCreateNewLobby(context: Context, code: String, player: Player, connectToLobbyActivity: () -> Unit) {
+            val postListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val game = snapshot.getValue<Game>()
+                    // Check is there is a lobby with that code
+                    if (game == null) {
+                        createLobby(code, player)
+                        Log.d("FIREBASE_MANAGER", "Lobby created")
+                        connectToLobbyActivity()
+                        return
+                    }
+                    if(!game.isCalculatedScores) {
+                        if(game.isStarted) {
+                            Toast.makeText(context, "That lobby is active", Toast.LENGTH_SHORT).show()
+                            return
+                        }
+                        else if(game.players.size > 0) {
+                            Toast.makeText(context, "That lobby is created and waiting for players", Toast.LENGTH_SHORT).show()
+                            return
+                        }
+                    }
+                    createLobby(code, player)
+                    Log.d("FIREBASE_MANAGER", "Lobby created")
+                    connectToLobbyActivity()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Fail to connect / check
+                    Toast.makeText(context, "Fail to connect", Toast.LENGTH_SHORT).show()
+                    Log.w("FIREBASE_MANAGER", "loadPost:onCancelled", error.toException())
+                }
+            }
+            database.getReference(code).addListenerForSingleValueEvent(postListener)
+        }
+        fun createLobby(code: String, player: Player) {
             val game = Game(code = code)
             // Add host player
-            game.addPlayer(player)
+            GameManager.addPlayer(game, player)
             // Set that client as player 0 (host)
             ClientInfo.id = 0
             // Set lobby at firebase
@@ -33,16 +67,18 @@ class FirebaseManager {
         fun connectToLobby(code: String, player: Player, context: Context, connectToLobbyActivity: () -> Unit){
             val postListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val post = snapshot.getValue<Game>()
+                    val game = snapshot.getValue<Game>()
                     // Check is there is a lobby with that code
-                    if (post == null) {
+                    if (game == null) {
                         Toast.makeText(context, "There is no lobby with that code", Toast.LENGTH_SHORT).show()
                         return
                     }
                     // Adding player to the lobby
-                    post.addPlayer(player)
-                    database.getReference(code).setValue(post)
-                    Log.d("FIREBASE_MANAGER", "Successfully added player")
+                    if(!game.isStarted) {
+                        GameManager.addPlayer(game, player)
+                        database.getReference(code).setValue(game)
+                        Log.d("FIREBASE_MANAGER", "Successfully added player")
+                    }
                     // Launch lobby activity
                     connectToLobbyActivity()
                 }
@@ -129,12 +165,18 @@ class FirebaseManager {
         // endregion
 
         // region Additional functions
+        fun setPlayer(code: String, player: Player, id: Int) {
+            Log.d("FIREBASE_MANAGER", "Setting player $id")
+            database.getReference("$code/players/$id").setValue(player)
+        }
         fun deleteUser(code: String, id: Int) {
-            database.getReference("$code/players/$id").removeValue()
-            //database.getReference(code).child("players").child(id.toString()).removeValue()
+            Log.d("FIREBASE_MANAGER", "Deleting player $id")
+            if(ClientInfo.id != -1) {
+                database.getReference("$code/players/$id").removeValue()
+            }
             attemptToDestroyLobby(code)
         }
-        fun attemptToDestroyLobby(code: String, isIgnoringRules: Boolean = false) {
+        private fun attemptToDestroyLobby(code: String, isIgnoringRules: Boolean = false) {
             val postListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val players = snapshot.getValue<MutableList<Player>>()
@@ -168,12 +210,17 @@ class FirebaseManager {
                     }
                     //  Game start
                     game.isStarted = true
-                    game.createNewDeck()
-                    game.stirDeck1.add(CardManager.getCardFromCardDeck(game, true))
-                    game.stirDeck2.add(CardManager.getCardFromCardDeck(game, true))
+                    GameManager.createNewDeck(game)
+                    game.stirDeck1.add(GameManager.getCardFromCardDeck(game, true))
+                    game.stirDeck2.add(GameManager.getCardFromCardDeck(game, true))
+                    for(i in 0 until game.players.size) {
+                        if(game.players[i] == null) {
+                            game.players.removeAt(i)
+                        }
+                    }
                     for(j in 1..6) {
                         for(i in game.players) {
-                            i.fields.add(CardManager.getCardFromCardDeck(game))
+                            i.fields.add(GameManager.getCardFromCardDeck(game))
                         }
                     }
                     database.getReference(code).setValue(game)

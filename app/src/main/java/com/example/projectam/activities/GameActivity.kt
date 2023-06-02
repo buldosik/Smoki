@@ -99,6 +99,11 @@ class GameActivity : AppCompatActivity() {
         super.onPause()
         FirebaseManager.deleteGameUpdater(ClientInfo.gameCode)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        FirebaseManager.deleteUser(ClientInfo.gameCode, ClientInfo.id)
+    }
     // endregion firebase
 
     private fun initViews() {
@@ -145,15 +150,15 @@ class GameActivity : AppCompatActivity() {
 
         if(game.playerTurn == ClientInfo.id){
             currentState.setState(ChoosingDeck())
-            if(!game.players[game.getCurrentPlayerIndex()].isRevealedAny())
+            if(!game.players[GameManager.getCurrentPlayerIndex(game)].isRevealedAny())
                 currentState.setState(RevealFirstCard())
             if(game.isFinished) {
                 Log.d("GameActivity", "State - reveal mirrors")
                 currentState.setState(RevealMirrors())
-                if(game.players[game.getCurrentPlayerIndex()].fields.all {card ->
+                if(game.players[GameManager.getCurrentPlayerIndex(game)].fields.all {card ->
                         card.value != -1
                     }) {
-                    for(i in game.players[game.getCurrentPlayerIndex()].fields)
+                    for(i in game.players[GameManager.getCurrentPlayerIndex(game)].fields)
                         Log.d("GameActivity", "value - ${i.value}")
                     Log.d("GameActivity", "State - end turn")
                     currentState.setState(EndTurn())
@@ -205,5 +210,9 @@ class GameActivity : AppCompatActivity() {
         else
             hintCardTV.visibility = View.INVISIBLE
         nicknamesVisibility = !nicknamesVisibility
+    }
+    fun leaveLobby(view: View) {
+        FirebaseManager.deleteUser(ClientInfo.gameCode, ClientInfo.id)
+        startActivity(Intent(this, ConnectActivity::class.java))
     }
 }

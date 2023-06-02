@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.projectam.ClientInfo
 import com.example.projectam.activities.GameActivity
 import com.example.projectam.utils.Card
+import com.example.projectam.utils.GameManager
 import com.example.projectam.utils.ImageConverter
 
 class ChoosingField(var isStirChosen: Boolean = false) : GameState {
@@ -23,7 +24,7 @@ class ChoosingField(var isStirChosen: Boolean = false) : GameState {
             ctx.stir2IV.setBackgroundResource(0)
             ctx.hintCardIV.setImageResource(ImageConverter.getImage(Card(-10, false)))
 
-            ClientInfo.game.addToStir1(ClientInfo.chosenCard)
+            GameManager.addToStir1(ClientInfo.game, ClientInfo.chosenCard)
             ctx.setState(EndTurn())
         }
         ctx.stir2IV.setOnClickListener{
@@ -34,7 +35,7 @@ class ChoosingField(var isStirChosen: Boolean = false) : GameState {
             ctx.stir2IV.setBackgroundResource(0)
             ctx.hintCardIV.setImageResource(ImageConverter.getImage(Card(-10, false)))
 
-            ClientInfo.game.addToStir2(ClientInfo.chosenCard)
+            GameManager.addToStir2(ClientInfo.game, ClientInfo.chosenCard)
             ctx.setState(EndTurn())
         }
     }
@@ -57,7 +58,7 @@ class ChoosingField(var isStirChosen: Boolean = false) : GameState {
                 return
             }
             if(player.fields[position].value == 10) {
-                ClientInfo.game.swapTen(position)
+                GameManager.swapTen(ClientInfo.game, position)
                 GameActivity.hintCardIV.setImageResource(ImageConverter.getImage(ClientInfo.chosenCard))
             }
             GameActivity.currentState.setState(ChoosingStir())

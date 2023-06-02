@@ -3,6 +3,7 @@ package com.example.projectam.states
 import android.util.Log
 import com.example.projectam.ClientInfo
 import com.example.projectam.FirebaseManager
+import com.example.projectam.utils.GameManager
 import java.lang.ref.Cleaner
 
 class EndTurn : GameState {
@@ -10,10 +11,10 @@ class EndTurn : GameState {
         ctx.deckIV.setOnClickListener(null)
         ctx.stir1IV.setOnClickListener(null)
         ctx.stir2IV.setOnClickListener(null)
-        if (ClientInfo.game.isRevealed() && !ClientInfo.game.isFinished) {
+        if (GameManager.isRevealed(ClientInfo.game) && !ClientInfo.game.isFinished) {
             Log.d("EndTurn", "Game is finished")
             ClientInfo.game.isFinished = true
-            ClientInfo.game.revealAllCards()
+            GameManager.revealAllCards(ClientInfo.game)
         }
         if(ClientInfo.game.isFinished && ClientInfo.game.players.all { player ->
                 player.fields.all { card ->
@@ -22,9 +23,9 @@ class EndTurn : GameState {
             }) {
             Log.d("EndTurn", "Mirrors are revealed")
             ClientInfo.game.isCalculatedScores = true
-            ClientInfo.game.calculateScores()
+            GameManager.calculateScores(ClientInfo.game)
         }
-        ClientInfo.game.changePlayerTurn()
+        GameManager.changePlayerTurn(ClientInfo.game)
 
         Log.d("EndTurn", "send data to Firebase")
 
