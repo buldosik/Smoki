@@ -16,16 +16,19 @@ class RevealMirrors : GameState {
     var firstClick: Int = -1
 
     override fun onItemClick(position: Int) {
-        if(firstClick == -1 && ClientInfo.game.players[GameManager.getCurrentPlayerIndex(ClientInfo.game)].fields[position].value == -1) {
+        // ToDo delete cycle
+        if(firstClick == -1 && ClientInfo.game.players[GameManager.getCurrentPlayerIndex(ClientInfo.game)]!!.fields[position].value == -1) {
             Log.d("RevealMirrors", "remember first card")
             firstClick = position
             return
         }
-        if(ClientInfo.game.players[GameManager.getCurrentPlayerIndex(ClientInfo.game)].fields[position].value != -1 && abs(position - firstClick) != 1){
+        if(ClientInfo.game.players[GameManager.getCurrentPlayerIndex(ClientInfo.game)]!!.fields[position].value != -1 && abs(position - firstClick) != 1){
             Log.d("RevealMirrors", "not separate card")
             return
         }
         for (player in ClientInfo.game.players) {
+            if (player == null)
+                continue
             if (player.id != ClientInfo.id)
                 continue
             Log.d("RevealMirrors", "revealing mirror")

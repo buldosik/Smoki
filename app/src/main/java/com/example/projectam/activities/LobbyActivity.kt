@@ -45,7 +45,7 @@ class LobbyActivity : AppCompatActivity() {
         createListener()
     }
     private fun createListener() {
-        FirebaseManager.initLobbyUpdaterListener(ClientInfo.gameCode, updateAdapter, this)
+        FirebaseManager.initLobbyUpdaterListener(updateAdapter, this)
     }
 
     override fun onResume() {
@@ -56,6 +56,11 @@ class LobbyActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         FirebaseManager.deleteLobbyUpdater(ClientInfo.gameCode)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        FirebaseManager.deleteUser(ClientInfo.gameCode, ClientInfo.id)
     }
 
     private val updateAdapter = fun(game: Game) {

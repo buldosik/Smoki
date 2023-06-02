@@ -9,7 +9,7 @@ import com.example.projectam.utils.Player
 
 class ResultAdapter(
     private val context: Context,
-    private val players: MutableList <Player>
+    private val players: MutableList <Player?>
 ) : RecyclerView.Adapter<ResultViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {

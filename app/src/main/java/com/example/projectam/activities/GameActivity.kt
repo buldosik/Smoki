@@ -89,7 +89,7 @@ class GameActivity : AppCompatActivity() {
 
     // region firebase
     private fun createListener() {
-        FirebaseManager.initGameUpdaterListener(ClientInfo.gameCode, updateAdapters, this)
+        FirebaseManager.initGameUpdaterListener(updateAdapters, this)
     }
     override fun onResume() {
         super.onResume()
@@ -132,8 +132,11 @@ class GameActivity : AppCompatActivity() {
 
     private val updatePlayer = fun() {
         for (player in ClientInfo.game.players) {
+            if(player == null)
+                continue
             if (player.id == ClientInfo.id) {
                 views[ClientInfo.id].adapter = GameAdapter(this, player.fields, currentState)
+                break
             }
         }
     }
@@ -146,41 +149,39 @@ class GameActivity : AppCompatActivity() {
             return
         }
 
-        val playersId: ArrayList<Int> = arrayListOf()
+        for (index in 0 until ClientInfo.gameSize) {
+            if(index >= game.players.size) {
+                names[index].text = "Empty"
+                views[index].visibility = View.INVISIBLE
+                continue
+            }
+            val player = game.players[index]
+            if(player == null) {
+                names[index].text = "Empty"
+                views[index].visibility = View.INVISIBLE
+                continue
+            }
+            views[index].visibility = View.VISIBLE
+            views[index].adapter = GameAdapter(this, player.fields, null)
+            names[index].text = player.username
+        }
 
         if(game.playerTurn == ClientInfo.id){
+            Log.d("GameActivity", "State - choose deck")
             currentState.setState(ChoosingDeck())
-            if(!game.players[GameManager.getCurrentPlayerIndex(game)].isRevealedAny())
+            if(!game.players[GameManager.getCurrentPlayerIndex(game)]!!.isRevealedAny()) {
+                Log.d("GameActivity", "State - reveal first card")
                 currentState.setState(RevealFirstCard())
+            }
             if(game.isFinished) {
                 Log.d("GameActivity", "State - reveal mirrors")
                 currentState.setState(RevealMirrors())
-                if(game.players[GameManager.getCurrentPlayerIndex(game)].fields.all {card ->
+                if(game.players[GameManager.getCurrentPlayerIndex(game)]!!.fields.all {card ->
                         card.value != -1
                     }) {
-                    for(i in game.players[GameManager.getCurrentPlayerIndex(game)].fields)
-                        Log.d("GameActivity", "value - ${i.value}")
                     Log.d("GameActivity", "State - end turn")
                     currentState.setState(EndTurn())
                 }
-            }
-        }
-
-        for (i in 0 until 5) {
-            views[i].visibility = View.VISIBLE
-        }
-        for (player in game.players) {
-            playersId.add(player.id)
-            views[player.id].adapter = GameAdapter(this, player.fields, null)
-            names[player.id].text = player.username
-            if (player.id == ClientInfo.id) {
-                views[ClientInfo.id].adapter = GameAdapter(this, player.fields, currentState)
-            }
-        }
-        for (i in 0 until 5) {
-            if (!playersId.contains(i)) {
-                names[i].text = "Empty"
-                views[i].visibility = View.INVISIBLE
             }
         }
 
@@ -212,6 +213,7 @@ class GameActivity : AppCompatActivity() {
         nicknamesVisibility = !nicknamesVisibility
     }
     fun leaveLobby(view: View) {
+        FirebaseManager.deleteGameUpdater(ClientInfo.gameCode)
         FirebaseManager.deleteUser(ClientInfo.gameCode, ClientInfo.id)
         startActivity(Intent(this, ConnectActivity::class.java))
     }

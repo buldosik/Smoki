@@ -15,6 +15,8 @@ class RevealFirstCard : GameState {
     override fun onItemClick(position: Int) {
         Log.d("RevealFirstCard", "click on player field")
         for (player in ClientInfo.game.players) {
+            if (player == null)
+                continue
             if (player.id != ClientInfo.id)
                 continue
             Log.d("RevealFirstCard", "reveal card")

@@ -47,6 +47,8 @@ class ChoosingPair (var positionOfNine : Int) : GameState {
             return
         }
         for (player in ClientInfo.game.players) {
+            if (player == null)
+                continue
             if (player.id != ClientInfo.id)
                 continue
             Log.d("ChoosingPair", "swapping cards")
