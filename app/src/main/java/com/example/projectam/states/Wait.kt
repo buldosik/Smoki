@@ -13,6 +13,11 @@ class Wait : GameState {
     override fun setHighlighters(ctx: GameStateContext) {
         // Nothing
     }
+
+    override fun callSound(ctx: GameStateContext) {
+        ctx.mediaPlayer.release()
+    }
+
     override fun onItemClick(position: Int) {
         // Nothing
     }

@@ -1,5 +1,6 @@
 package com.example.projectam.states
 
+import android.media.MediaPlayer
 import android.util.Log
 import android.util.TypedValue
 import android.widget.Toast
@@ -62,6 +63,12 @@ class ChoosingDeck : GameState {
         ctx.deckHighlighter.setBackgroundResource(R.drawable.highlight_border)
         ctx.stir1Highlighter.setBackgroundResource(R.drawable.highlight_border)
         ctx.stir2Highlighter.setBackgroundResource(R.drawable.highlight_border)
+    }
+
+    override fun callSound(ctx: GameStateContext) {
+        ctx.mediaPlayer.release()
+        ctx.mediaPlayer = MediaPlayer.create(ctx.context, R.raw.notification)
+        ctx.mediaPlayer.start()
     }
 
     override fun onItemClick(position: Int) {

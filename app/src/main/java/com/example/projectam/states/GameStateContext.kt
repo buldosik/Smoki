@@ -1,15 +1,10 @@
 package com.example.projectam.states
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import com.example.projectam.ClientInfo
-import com.example.projectam.activities.GameActivity
-import com.example.projectam.adapters.GameAdapter
-import com.example.projectam.utils.Card
-import com.example.projectam.utils.Game
+import com.example.projectam.R
 
 class GameStateContext (
     var updatePlayerListener: () -> Unit,
@@ -24,20 +19,24 @@ class GameStateContext (
     var context: Context
     ) {
     var currentState: GameState
+    var mediaPlayer: MediaPlayer
 
     init{
         currentState = Wait()
+        mediaPlayer = MediaPlayer.create(context, R.raw.notification)
     }
 
     fun setState(state: GameState) {
         currentState = state
         clearHighlighters()
-        setListeners()
+        setState()
         updatePlayerListener()
     }
-    private fun setListeners() {
+
+    private fun setState() {
         currentState.changeListeners(this)
         currentState.setHighlighters(this)
+        currentState.callSound(this)
     }
 
     private fun clearHighlighters() {

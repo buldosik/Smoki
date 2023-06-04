@@ -23,7 +23,7 @@ import com.example.projectam.states.EndTurn
 import com.example.projectam.states.GameStateContext
 import com.example.projectam.states.RevealFirstCard
 import com.example.projectam.utils.*
-import java.lang.Float.max
+import kotlin.math.max
 import kotlin.math.min
 
 class GameActivity : AppCompatActivity() {
