@@ -6,6 +6,7 @@
     <color name="light_gray">#FFBBBBBB</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#186BAE</color>
+    <color name="highlightColor">#EA8212</color>
 
     <!-- Dark theme -->
     <color name="teal_700">#0B525B</color>

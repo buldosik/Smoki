@@ -20,7 +20,6 @@ import com.example.projectam.utils.Player
 
 class LobbyActivity : AppCompatActivity() {
 
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var gameCode: TextView
     private lateinit var startButton: Button

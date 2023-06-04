@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/player1"
+    <FrameLayout
+        android:id="@+id/player1Highlighter"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="5dp"
@@ -18,10 +18,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/player2"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/player1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2.5dp"
+            tools:ignore="MissingConstraints">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/player2Highlighter"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
@@ -32,10 +42,19 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/horizontalMiddleOfScreen"
-        app:layout_constraintVertical_bias="1" />
+        app:layout_constraintVertical_bias="1">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/player3"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/player2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2.5dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/player3Highlighter"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="2.5dp"
@@ -47,10 +66,19 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="@+id/horizontalMiddleOfScreen"
-        app:layout_constraintVertical_bias="1" />
+        app:layout_constraintVertical_bias="1">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/player4"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/player3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2.5dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/player4Highlighter"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="5dp"
@@ -61,10 +89,19 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/horizontalMiddleOfScreen"
-        app:layout_constraintVertical_bias="1" />
+        app:layout_constraintVertical_bias="1">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/player5"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/player4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2.5dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/player5Highlighter"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="5dp"
@@ -75,7 +112,14 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/player5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2.5dp" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/namePlayer1"
@@ -83,11 +127,11 @@
         android:layout_height="wrap_content"
         android:text="Player1"
         android:textSize="@dimen/text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/player1"
-        app:layout_constraintEnd_toEndOf="@+id/player1"
+        app:layout_constraintBottom_toBottomOf="@+id/player1Highlighter"
+        app:layout_constraintEnd_toEndOf="@+id/player1Highlighter"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/player1"
-        app:layout_constraintTop_toTopOf="@+id/player1"
+        app:layout_constraintStart_toStartOf="@+id/player1Highlighter"
+        app:layout_constraintTop_toTopOf="@+id/player1Highlighter"
         app:layout_constraintVertical_bias="0.5" />
 
     <TextView
@@ -95,12 +139,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Player2"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/player2"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/player2Highlighter"
+        app:layout_constraintEnd_toEndOf="@+id/player2Highlighter"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/player2"
-        app:layout_constraintTop_toTopOf="@+id/player2"
+        app:layout_constraintStart_toStartOf="@+id/player2Highlighter"
+        app:layout_constraintTop_toTopOf="@+id/player2Highlighter"
         app:layout_constraintVertical_bias="0.5" />
 
     <TextView
@@ -108,12 +152,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Player3"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/player3"
-        app:layout_constraintEnd_toEndOf="@+id/player3"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/player3Highlighter"
+        app:layout_constraintEnd_toEndOf="@+id/player3Highlighter"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/player3"
-        app:layout_constraintTop_toTopOf="@+id/player3"
+        app:layout_constraintStart_toStartOf="@+id/player3Highlighter"
+        app:layout_constraintTop_toTopOf="@+id/player3Highlighter"
         app:layout_constraintVertical_bias="0.5" />
 
     <TextView
@@ -121,12 +165,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Player4"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/player4"
-        app:layout_constraintEnd_toEndOf="@+id/player4"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/player4Highlighter"
+        app:layout_constraintEnd_toEndOf="@+id/player4Highlighter"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/player4"
-        app:layout_constraintTop_toTopOf="@+id/player4"
+        app:layout_constraintStart_toStartOf="@+id/player4Highlighter"
+        app:layout_constraintTop_toTopOf="@+id/player4Highlighter"
         app:layout_constraintVertical_bias="0.5" />
 
     <TextView
@@ -134,32 +178,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Player5"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/player5"
-        app:layout_constraintEnd_toEndOf="@+id/player5"
+        android:textSize="@dimen/text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/player5Highlighter"
+        app:layout_constraintEnd_toEndOf="@+id/player5Highlighter"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/player5"
-        app:layout_constraintTop_toTopOf="@+id/player5"
+        app:layout_constraintStart_toStartOf="@+id/player5Highlighter"
+        app:layout_constraintTop_toTopOf="@+id/player5Highlighter"
         app:layout_constraintVertical_bias="0.5" />
 
-    <ImageView
-        android:id="@+id/deck"
+    <FrameLayout
+        android:id="@+id/deckHighlighter"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="2.5dp"
-        android:src="@drawable/close_image_vert"
         app:layout_constraintBottom_toTopOf="@+id/horizontalMiddleOfScreen"
         app:layout_constraintDimensionRatio="2:3"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintVertical_bias="0.55">
 
-    <ImageView
-        android:id="@+id/stir1"
+        <ImageView
+            android:id="@+id/deck"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2.5dp"
+            android:src="@drawable/close_image_vert"
+            tools:ignore="MissingConstraints" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/stir1Highlighter"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="5dp"
@@ -171,10 +222,18 @@
         app:layout_constraintDimensionRatio="2:3"
         app:layout_constraintEnd_toStartOf="@+id/stirSeparator"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/stir2"
+        <ImageView
+            android:id="@+id/stir1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2.5dp"
+            android:src="@drawable/close_image_vert" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/stir2Highlighter"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="5dp"
@@ -186,7 +245,16 @@
         app:layout_constraintDimensionRatio="2:3"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="@+id/stirSeparator"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/stir2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2.5dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/close_image_vert" />
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/hintCard"
@@ -195,9 +263,9 @@
         android:layout_marginTop="2dp"
         app:layout_constraintBottom_toTopOf="@+id/horizontalMiddleOfScreen"
         app:layout_constraintDimensionRatio="2:3"
-        app:layout_constraintEnd_toEndOf="@+id/stir2"
+        app:layout_constraintEnd_toEndOf="@+id/stir2Highlighter"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/stir1"
+        app:layout_constraintStart_toStartOf="@+id/stir1Highlighter"
         app:layout_constraintTop_toTopOf="@+id/cardDivider"
         app:srcCompat="@drawable/close_image_vert" />
 
@@ -205,14 +273,14 @@
         android:id="@+id/NicknamesReveal"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
         android:backgroundTint="#00FFFFFF"
         android:onClick="changeVisibilityPlayersNicknames"
         app:layout_constraintBottom_toTopOf="@+id/cardDivider"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/player1"
+        app:layout_constraintStart_toEndOf="@+id/player1Highlighter"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/baseline_remove_red_eye_24"
@@ -222,12 +290,12 @@
         android:id="@+id/LeaveLobby"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
         android:backgroundTint="#00FFFFFF"
         android:onClick="leaveLobby"
         app:layout_constraintBottom_toTopOf="@+id/cardDivider"
-        app:layout_constraintEnd_toStartOf="@+id/player5"
+        app:layout_constraintEnd_toStartOf="@+id/player5Highlighter"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="parent"

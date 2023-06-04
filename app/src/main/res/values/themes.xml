@@ -13,5 +13,9 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:textColor">@color/blue</item>
+        <!-- New attribute for border color -->
+        <item name="highlightBorderColor">@color/highlightColor</item>
+        <!-- New attribute for border color -->
+        <item name="lobbyBorderColor">@color/melon_700</item>
     </style>
 </resources>
