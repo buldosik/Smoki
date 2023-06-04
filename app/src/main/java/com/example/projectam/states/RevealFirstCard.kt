@@ -1,5 +1,6 @@
 package com.example.projectam.states
 
+import android.media.MediaPlayer
 import android.util.Log
 import com.example.projectam.ClientInfo
 import com.example.projectam.R
@@ -12,8 +13,15 @@ class RevealFirstCard : GameState {
         ctx.stir1IV.setOnClickListener(null)
         ctx.stir2IV.setOnClickListener(null)
     }
+
     override fun setHighlighters(ctx: GameStateContext) {
         ctx.playerHighlighters.setBackgroundResource(R.drawable.highlight_border)
+    }
+
+    override fun callSound(ctx: GameStateContext) {
+        ctx.mediaPlayer.release()
+        ctx.mediaPlayer = MediaPlayer.create(ctx.context, R.raw.notification)
+        ctx.mediaPlayer.start()
     }
 
     override fun onItemClick(position: Int) {

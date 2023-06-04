@@ -18,6 +18,7 @@ class RevealMirrors : GameState {
     override fun setHighlighters(ctx: GameStateContext) {
         ctx.playerHighlighters.setBackgroundResource(R.drawable.highlight_border)
     }
+
     override fun onItemClick(position: Int) {
         if(firstClick == -1 && ClientInfo.game.players[GameManager.getCurrentPlayerIndex(ClientInfo.game)]!!.fields[position].value == -1) {
             Log.d("RevealMirrors", "remember first card")
@@ -34,8 +35,9 @@ class RevealMirrors : GameState {
 
         if(player.fields.all { card -> card.value != -1 })
             GameActivity.currentState.setState(EndTurn())
-        else
-            firstClick = -1
+        else {
+            GameActivity.currentState.setState(RevealMirrors())
+        }
     }
 
 }

@@ -37,6 +37,10 @@ class EndTurn : GameState {
         // Nothing
     }
 
+    override fun callSound(ctx: GameStateContext) {
+        ctx.mediaPlayer.release()
+    }
+
     override fun onItemClick(position: Int) {
         // Nothing
     }

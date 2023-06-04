@@ -34,8 +34,7 @@ class ChoosingPair (var positionOfNine : Int) : GameState {
     }
 
     override fun setHighlighters(ctx: GameStateContext) {
-        ctx.deckHighlighter.setBackgroundResource(R.drawable.highlight_border)
-        ctx.playerHighlighters.setBackgroundColor(R.drawable.highlight_border)
+        ctx.playerHighlighters.setBackgroundResource(R.drawable.highlight_border)
         ctx.stir1Highlighter.setBackgroundResource(R.drawable.highlight_border)
         ctx.stir2Highlighter.setBackgroundResource(R.drawable.highlight_border)
     }
