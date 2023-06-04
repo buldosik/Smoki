@@ -17,12 +17,12 @@
     <color name="purple_700">#4D194D</color>
 
     <!-- Light theme -->
-    <color name="melon_700">#FFB5A7</color>
-    <color name="melon_500">#FEC5BB</color>
-    <color name="melon_200">#FCD5CE</color>
-    <color name="orange_200">#F9DCC4</color>
-    <color name="orange_500">#FCD2AF</color>
-    <color name="orange_700">#FEC89A</color>
+    <color name="melon_700">#F25C54</color>
+    <color name="melon_500">#F26B58</color>
+    <color name="melon_200">#F37A5C</color>
+    <color name="orange_200">#F69162</color>
+    <color name="orange_500">#F79F65</color>
+    <color name="orange_700">#F7B267</color>
 
 
 

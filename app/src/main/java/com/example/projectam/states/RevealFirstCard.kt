@@ -15,7 +15,7 @@ class RevealFirstCard : GameState {
     }
 
     override fun setHighlighters(ctx: GameStateContext) {
-        ctx.playerHighlighters.setBackgroundResource(R.drawable.highlight_border)
+        ctx.playerHighlighters?.setBackgroundResource(R.drawable.highlight_border)
     }
 
     override fun callSound(ctx: GameStateContext) {

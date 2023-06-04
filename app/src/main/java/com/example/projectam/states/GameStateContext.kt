@@ -9,7 +9,7 @@ import com.example.projectam.R
 
 class GameStateContext (
     var updatePlayerListener: () -> Unit,
-    var playerHighlighters: FrameLayout,
+    var playerHighlighters: FrameLayout?,
     var deckIV: ImageView,
     var deckHighlighter: FrameLayout,
     var stir1IV: ImageView,
@@ -43,7 +43,7 @@ class GameStateContext (
     }
 
     private fun clearHighlighters() {
-        playerHighlighters.setBackgroundResource(0)
+        playerHighlighters?.setBackgroundResource(0)
         deckHighlighter.setBackgroundResource(0)
         stir1Highlighter.setBackgroundResource(0)
         stir2Highlighter.setBackgroundResource(0)

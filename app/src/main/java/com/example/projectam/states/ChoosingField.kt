@@ -36,7 +36,7 @@ class ChoosingField(var isStirChosen: Boolean = false) : GameState {
     }
 
     override fun setHighlighters(ctx: GameStateContext) {
-        ctx.playerHighlighters.setBackgroundResource(R.drawable.highlight_border)
+        ctx.playerHighlighters?.setBackgroundResource(R.drawable.highlight_border)
         if(ClientInfo.chosenCard.value == 10 || isStirChosen)
             return
         ctx.stir1Highlighter.setBackgroundResource(R.drawable.highlight_border)

@@ -65,7 +65,15 @@ class GameActivity : AppCompatActivity() {
         setContentView(view)
 
         initViews()
-        currentState = GameStateContext(
+        currentState = if(ClientInfo.id == -1)
+            GameStateContext(
+                updatePlayer,
+                null,
+                deckIV, deckHighlighter,
+                stir1IV, stir1Highlighter,
+                stir2IV, stir2Highlighter,
+                hintCardIV, this)
+        else GameStateContext(
             updatePlayer,
             viewsHighlighters[ClientInfo.id],
             deckIV, deckHighlighter,

@@ -16,7 +16,7 @@ class RevealMirrors : GameState {
 
     var firstClick: Int = -1
     override fun setHighlighters(ctx: GameStateContext) {
-        ctx.playerHighlighters.setBackgroundResource(R.drawable.highlight_border)
+        ctx.playerHighlighters?.setBackgroundResource(R.drawable.highlight_border)
     }
 
     override fun onItemClick(position: Int) {
