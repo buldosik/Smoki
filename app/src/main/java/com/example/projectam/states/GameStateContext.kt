@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.widget.FrameLayout
 import android.widget.ImageView
+import com.example.projectam.ClientInfo
 import com.example.projectam.R
 
 class GameStateContext (
@@ -36,6 +37,8 @@ class GameStateContext (
     private fun setState() {
         currentState.changeListeners(this)
         currentState.setHighlighters(this)
+        if(!ClientInfo.isSoundActive)
+            return
         currentState.callSound(this)
     }
 

@@ -8,6 +8,7 @@ class ClientInfo {
         var username: String = ""
         var id: Int = -1
         var gameCode: String = ""
+        var isSoundActive: Boolean = true
         var game: Game = Game()
         var chosenCard: Card = Card(-10, false)
         const val gameSize: Int = 5

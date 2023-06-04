@@ -8,6 +8,7 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -38,7 +39,9 @@ class GameActivity : AppCompatActivity() {
     private lateinit var stir2IV: ImageView
     private lateinit var stir2Highlighter: FrameLayout
 
-    private  var nicknamesVisibility: Boolean = false
+    private var nicknamesVisibility: Boolean = false
+
+    private lateinit var soundButton: ImageButton
 
     private lateinit var scaleGestureDetector: ScaleGestureDetector
     private var scaleFactor = 1.0f
@@ -121,11 +124,6 @@ class GameActivity : AppCompatActivity() {
         views.add(findViewById(R.id.player4))
         views.add(findViewById(R.id.player5))
 
-
-        val typedValue = TypedValue()
-        theme.resolveAttribute(R.attr.highlightBorderColor, typedValue, true)
-        val borderColor = typedValue.data
-
         viewsHighlighters.add(findViewById(R.id.player1Highlighter))
         viewsHighlighters.add(findViewById(R.id.player2Highlighter))
         viewsHighlighters.add(findViewById(R.id.player3Highlighter))
@@ -151,6 +149,8 @@ class GameActivity : AppCompatActivity() {
         stir2IV = findViewById(R.id.stir2)
         hintCardIV = findViewById(R.id.hintCard)
         hintCardTV = findViewById(R.id.handeCardTV)
+
+        soundButton = findViewById(R.id.ChangeSound)
     }
 
     private val updatePlayer = fun() {
@@ -240,5 +240,13 @@ class GameActivity : AppCompatActivity() {
         FirebaseManager.deleteGameUpdater(ClientInfo.gameCode)
         FirebaseManager.deleteUser(ClientInfo.gameCode, ClientInfo.id)
         startActivity(Intent(this, ConnectActivity::class.java))
+    }
+
+    fun turnSound(view: View) {
+        ClientInfo.isSoundActive = !ClientInfo.isSoundActive
+        if(ClientInfo.isSoundActive)
+            soundButton.setImageResource(R.drawable.outline_volume_up_24)
+        else
+            soundButton.setImageResource(R.drawable.baseline_volume_off_24)
     }
 }
