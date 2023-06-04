@@ -2,6 +2,7 @@ package com.example.projectam.states
 
 import android.util.Log
 import com.example.projectam.ClientInfo
+import com.example.projectam.R
 import com.example.projectam.activities.GameActivity
 import com.example.projectam.utils.GameManager
 import kotlin.math.abs
@@ -14,9 +15,10 @@ class RevealMirrors : GameState {
     }
 
     var firstClick: Int = -1
-
+    override fun setHighlighters(ctx: GameStateContext) {
+        ctx.playerHighlighters.setBackgroundResource(R.drawable.highlight_border)
+    }
     override fun onItemClick(position: Int) {
-        // ToDo delete cycle
         if(firstClick == -1 && ClientInfo.game.players[GameManager.getCurrentPlayerIndex(ClientInfo.game)]!!.fields[position].value == -1) {
             Log.d("RevealMirrors", "remember first card")
             firstClick = position
@@ -26,19 +28,14 @@ class RevealMirrors : GameState {
             Log.d("RevealMirrors", "not separate card")
             return
         }
-        for (player in ClientInfo.game.players) {
-            if (player == null)
-                continue
-            if (player.id != ClientInfo.id)
-                continue
-            Log.d("RevealMirrors", "revealing mirror")
-            player.fields[firstClick] = player.fields[position]
+        val player = GameManager.getCurrentPlayer(ClientInfo.game) ?: return
+        Log.d("RevealMirrors", "revealing mirror")
+        player.fields[firstClick] = player.fields[position]
 
-            if(player.fields.all { card -> card.value != -1 })
-                GameActivity.currentState.setState(EndTurn())
-            else
-                firstClick = -1
-        }
+        if(player.fields.all { card -> card.value != -1 })
+            GameActivity.currentState.setState(EndTurn())
+        else
+            firstClick = -1
     }
 
 }

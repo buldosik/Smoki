@@ -2,6 +2,7 @@ package com.example.projectam.states
 
 import android.util.Log
 import com.example.projectam.ClientInfo
+import com.example.projectam.R
 import com.example.projectam.activities.GameActivity
 import com.example.projectam.utils.ImageConverter
 
@@ -10,6 +11,9 @@ class RevealFirstCard : GameState {
         ctx.deckIV.setOnClickListener(null)
         ctx.stir1IV.setOnClickListener(null)
         ctx.stir2IV.setOnClickListener(null)
+    }
+    override fun setHighlighters(ctx: GameStateContext) {
+        ctx.playerHighlighters.setBackgroundResource(R.drawable.highlight_border)
     }
 
     override fun onItemClick(position: Int) {
@@ -22,7 +26,7 @@ class RevealFirstCard : GameState {
             Log.d("RevealFirstCard", "reveal card")
             player.fields[position].reveal()
 
-            GameActivity.currentState.setState(ChoosingDeck())
+            GameActivity.currentState.setState(EndTurn())
             break
         }
     }

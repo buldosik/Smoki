@@ -3,6 +3,7 @@ package com.example.projectam.states
 import android.util.Log
 import com.example.projectam.ClientInfo
 import com.example.projectam.FirebaseManager
+import com.example.projectam.R
 import com.example.projectam.utils.GameManager
 import java.lang.ref.Cleaner
 
@@ -31,6 +32,9 @@ class EndTurn : GameState {
 
         FirebaseManager.sendGameToServer(ClientInfo.gameCode, ClientInfo.game)
         ctx.setState(Wait())
+    }
+    override fun setHighlighters(ctx: GameStateContext) {
+        // Nothing
     }
 
     override fun onItemClick(position: Int) {

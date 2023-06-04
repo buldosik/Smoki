@@ -44,7 +44,7 @@ class GameManager {
             deck.shuffle()
         }
         //leaves top cards in stirs decks. All the other cards go in cardDeck
-        fun stirReset(game: Game) {
+        private fun stirReset(game: Game) {
             val card1 = game.stirDeck1[game.stirDeck1.size - 1]
             game.stirDeck1.removeAt(game.stirDeck1.size - 1)
             val card2 = game.stirDeck2[game.stirDeck2.size - 1]
@@ -92,6 +92,17 @@ class GameManager {
                 }
             }
             return -1
+        }
+        fun getCurrentPlayer(game: Game) : Player? {
+            for (i in 0 until game.players.size) {
+                if(game.players[i] == null) {
+                    continue
+                }
+                if (game.players[i]!!.id == ClientInfo.id) {
+                    return game.players[i]
+                }
+            }
+            return null
         }
 
         fun isRevealed(game: Game): Boolean {

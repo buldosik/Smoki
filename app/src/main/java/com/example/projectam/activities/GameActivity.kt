@@ -5,7 +5,9 @@ import android.content.Intent
 import android.graphics.drawable.*
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.*
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -21,25 +23,25 @@ import com.example.projectam.states.EndTurn
 import com.example.projectam.states.GameStateContext
 import com.example.projectam.states.RevealFirstCard
 import com.example.projectam.utils.*
-import org.w3c.dom.Text
 import java.lang.Float.max
 import kotlin.math.min
 
 class GameActivity : AppCompatActivity() {
     private var views: MutableList<RecyclerView> = mutableListOf()
+    private var viewsHighlighters: MutableList<FrameLayout> = mutableListOf()
     private var names: MutableList<TextView> = mutableListOf()
 
     private lateinit var deckIV: ImageView
+    private lateinit var deckHighlighter: FrameLayout
     private lateinit var stir1IV: ImageView
+    private lateinit var stir1Highlighter: FrameLayout
     private lateinit var stir2IV: ImageView
+    private lateinit var stir2Highlighter: FrameLayout
 
     private  var nicknamesVisibility: Boolean = false
 
     private lateinit var scaleGestureDetector: ScaleGestureDetector
     private var scaleFactor = 1.0f
-
-    private var width: Int = 0
-    private var height: Int = 0
 
     companion object {
         @SuppressLint("StaticFieldLeak")
@@ -58,14 +60,19 @@ class GameActivity : AppCompatActivity() {
         val view = layoutInflater.inflate(R.layout.game_activity, null)
         scaleGestureDetector = ScaleGestureDetector(this, ScaleListener(view))
         setContentView(view)
-        width = view.width
-        height = view.height
 
         initViews()
-        currentState = GameStateContext(updatePlayer, deckIV, stir1IV, stir2IV, hintCardIV, this)
+        currentState = GameStateContext(
+            updatePlayer,
+            viewsHighlighters[ClientInfo.id],
+            deckIV, deckHighlighter,
+            stir1IV, stir1Highlighter,
+            stir2IV, stir2Highlighter,
+            hintCardIV, this)
         createListener()
     }
     // region zoom
+    // ToDo it is not working correctly
     override fun onTouchEvent(event: MotionEvent): Boolean {
         scaleGestureDetector.onTouchEvent(event)
         return true
@@ -106,6 +113,7 @@ class GameActivity : AppCompatActivity() {
     }
     // endregion firebase
 
+
     private fun initViews() {
         views.add(findViewById(R.id.player1))
         views.add(findViewById(R.id.player2))
@@ -113,11 +121,26 @@ class GameActivity : AppCompatActivity() {
         views.add(findViewById(R.id.player4))
         views.add(findViewById(R.id.player5))
 
+
+        val typedValue = TypedValue()
+        theme.resolveAttribute(R.attr.highlightBorderColor, typedValue, true)
+        val borderColor = typedValue.data
+
+        viewsHighlighters.add(findViewById(R.id.player1Highlighter))
+        viewsHighlighters.add(findViewById(R.id.player2Highlighter))
+        viewsHighlighters.add(findViewById(R.id.player3Highlighter))
+        viewsHighlighters.add(findViewById(R.id.player4Highlighter))
+        viewsHighlighters.add(findViewById(R.id.player5Highlighter))
+
         names.add(findViewById(R.id.namePlayer1))
         names.add(findViewById(R.id.namePlayer2))
         names.add(findViewById(R.id.namePlayer3))
         names.add(findViewById(R.id.namePlayer4))
         names.add(findViewById(R.id.namePlayer5))
+
+        deckHighlighter = findViewById(R.id.deckHighlighter)
+        stir1Highlighter = findViewById(R.id.stir1Highlighter)
+        stir2Highlighter = findViewById(R.id.stir2Highlighter)
 
         for (view: RecyclerView in views) {
             view.layoutManager = GridLayoutManager(this, 3)
@@ -212,6 +235,7 @@ class GameActivity : AppCompatActivity() {
             hintCardTV.visibility = View.INVISIBLE
         nicknamesVisibility = !nicknamesVisibility
     }
+
     fun leaveLobby(view: View) {
         FirebaseManager.deleteGameUpdater(ClientInfo.gameCode)
         FirebaseManager.deleteUser(ClientInfo.gameCode, ClientInfo.id)
