@@ -1,6 +1,6 @@
-# Dragons Board Game (PC Version)
+# Dragons Board Game (Mobile Version)
 
-This is the PC version of the Dragons board game, developed as a project/coursework in Android Studio. The game features multiplayer functionality implemented using a Firebase (Real time database), where the game state is sent after each move.
+This is the Mobile version of the Dragons board game, developed as a project/coursework in Android Studio. The game features multiplayer functionality implemented using a Firebase (Real time database), where the game state is sent after each move.
 
 Please note that this version of the game is primarily designed for playing with friends and lacks robust security measures, making it vulnerable to various cheats. If you intend to deploy it in a public or production environment, additional security measures should be implemented.
 
