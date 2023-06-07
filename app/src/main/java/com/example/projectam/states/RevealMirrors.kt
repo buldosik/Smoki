@@ -20,9 +20,13 @@ class RevealMirrors : GameState {
     }
 
     override fun onItemClick(position: Int) {
-        if(firstClick == -1 && ClientInfo.game.players[GameManager.getCurrentPlayerIndex(ClientInfo.game)]!!.fields[position].value == -1) {
-            Log.d("RevealMirrors", "remember first card")
-            firstClick = position
+        if(firstClick == -1) {
+            if(ClientInfo.game.players[GameManager.getCurrentPlayerIndex(ClientInfo.game)]!!.fields[position].value == -1) {
+                Log.d("RevealMirrors", "remember first card")
+                firstClick = position
+                return
+            }
+            Log.d("RevealMirrors", "it is not mirror card")
             return
         }
         if(ClientInfo.game.players[GameManager.getCurrentPlayerIndex(ClientInfo.game)]!!.fields[position].value != -1 && abs(position - firstClick) != 1){
