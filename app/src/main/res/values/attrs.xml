@@ -2,4 +2,7 @@
 <resources>
     <attr name="highlightBorderColor" format="color" />
     <attr name="lobbyBorderColor" format="color" />
+    <attr name="InlineColor" format="color" />
+    <attr name="InlineColor_Alternative" format="color" />
+    <attr name="OutlineColor" format="color" />
 </resources>

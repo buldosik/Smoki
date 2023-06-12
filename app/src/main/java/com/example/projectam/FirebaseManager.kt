@@ -10,6 +10,7 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import kotlin.random.Random
 
 class FirebaseManager {
     companion object {
@@ -173,7 +174,7 @@ class FirebaseManager {
         }
         fun deleteUser(code: String, id: Int) {
             Log.d("FIREBASE_MANAGER", "Deleting player $id")
-            if(ClientInfo.id != -1) {
+            if(ClientInfo.id != -5) {
                 database.getReference("$code/players/$id").removeValue()
             }
             attemptToDestroyLobby(code)
@@ -221,6 +222,12 @@ class FirebaseManager {
                                 continue
                             i.fields.add(GameManager.getCardFromCardDeck(game))
                         }
+                    }
+                    // ToDo refactor/redo random player start
+                    var isPlayer = false
+                    while (!isPlayer) {
+                        game.playerTurn = Random.nextInt(5)
+                        isPlayer = game.players.any { it?.id == game.playerTurn }
                     }
                     database.getReference(code).setValue(game)
                 }

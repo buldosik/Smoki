@@ -13,9 +13,13 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:textColor">@color/blue</item>
-        <!-- New attribute for border color -->
+        <!-- New attribute for highlightBorder color -->
         <item name="highlightBorderColor">@color/highlightColor</item>
         <!-- New attribute for border color -->
         <item name="lobbyBorderColor">@color/melon_700</item>
+        <!-- New attribute for Nicknames' colors at game -->
+        <item name="InlineColor">@color/inlineColor</item>
+        <item name="InlineColor_Alternative">@color/inlineColor_Alternative</item>
+        <item name="OutlineColor">@color/outlineColor</item>
     </style>
 </resources>

@@ -23,8 +23,11 @@ class ImageConverter {
                     else -> R.drawable.close_image_vert
                 }
             } else {
-                return R.drawable.close_image_vert
+                R.drawable.close_image_vert
             }
+        }
+        fun getEmptyDeckImage(): Int {
+            return R.drawable.empty_deck
         }
     }
 }

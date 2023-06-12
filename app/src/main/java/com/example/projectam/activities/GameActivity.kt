@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.*
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.util.TypedValue
 import android.view.*
@@ -12,6 +13,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectam.ClientInfo
@@ -24,6 +26,7 @@ import com.example.projectam.states.EndTurn
 import com.example.projectam.states.GameStateContext
 import com.example.projectam.states.RevealFirstCard
 import com.example.projectam.utils.*
+import kotlinx.coroutines.delay
 import kotlin.math.max
 import kotlin.math.min
 
@@ -31,6 +34,7 @@ class GameActivity : AppCompatActivity() {
     private var views: MutableList<RecyclerView> = mutableListOf()
     private var viewsHighlighters: MutableList<FrameLayout> = mutableListOf()
     private var names: MutableList<TextView> = mutableListOf()
+    private var namesHighlighters: MutableList<TextView> = mutableListOf()
 
     private lateinit var deckIV: ImageView
     private lateinit var deckHighlighter: FrameLayout
@@ -45,6 +49,8 @@ class GameActivity : AppCompatActivity() {
 
     private lateinit var scaleGestureDetector: ScaleGestureDetector
     private var scaleFactor = 1.0f
+
+    private val DELAY_TIME :Long = 5000
 
     companion object {
         @SuppressLint("StaticFieldLeak")
@@ -65,7 +71,7 @@ class GameActivity : AppCompatActivity() {
         setContentView(view)
 
         initViews()
-        currentState = if(ClientInfo.id == -1)
+        currentState = if(ClientInfo.id == -5)
             GameStateContext(
                 updatePlayer,
                 null,
@@ -144,6 +150,12 @@ class GameActivity : AppCompatActivity() {
         names.add(findViewById(R.id.namePlayer4))
         names.add(findViewById(R.id.namePlayer5))
 
+        namesHighlighters.add(findViewById(R.id.nameOutlinePlayer1))
+        namesHighlighters.add(findViewById(R.id.nameOutlinePlayer2))
+        namesHighlighters.add(findViewById(R.id.nameOutlinePlayer3))
+        namesHighlighters.add(findViewById(R.id.nameOutlinePlayer4))
+        namesHighlighters.add(findViewById(R.id.nameOutlinePlayer5))
+
         deckHighlighter = findViewById(R.id.deckHighlighter)
         stir1Highlighter = findViewById(R.id.stir1Highlighter)
         stir2Highlighter = findViewById(R.id.stir2Highlighter)
@@ -176,25 +188,38 @@ class GameActivity : AppCompatActivity() {
     fun(game: Game) {
         ClientInfo.game = game
         if(game.isCalculatedScores) {
-            startActivity(Intent(this, ResultActivity::class.java))
+            // Create a Handler object
+            val handler = Handler()
+
+            // Define a Runnable to start the new activity
+            val runnable = Runnable {
+                startActivity(Intent(this, ResultActivity::class.java))
+                finish() // Finish the current activity if needed
+            }
+
+            // Post the runnable with delay
+            handler.postDelayed(runnable, DELAY_TIME)
             return
         }
 
         for (index in 0 until ClientInfo.gameSize) {
             if(index >= game.players.size) {
-                names[index].text = "Empty"
-                views[index].visibility = View.INVISIBLE
+                setPlayerView(index);
                 continue
             }
             val player = game.players[index]
             if(player == null) {
-                names[index].text = "Empty"
-                views[index].visibility = View.INVISIBLE
+                setPlayerView(index);
                 continue
             }
-            views[index].visibility = View.VISIBLE
+            setPlayerView(index, player.username, View.VISIBLE)
+            if(game.playerTurn == index) {
+                val typedValue = TypedValue()
+                theme.resolveAttribute(R.attr.InlineColor_Alternative, typedValue, true)
+                val color = ContextCompat.getColor(this, typedValue.resourceId)
+                names[index].setTextColor(color)
+            }
             views[index].adapter = GameAdapter(this, player.fields, null)
-            names[index].text = player.username
         }
 
         if(game.playerTurn == ClientInfo.id){
@@ -220,22 +245,36 @@ class GameActivity : AppCompatActivity() {
             stir1IV.setImageResource(ImageConverter.getImage(game.stirDeck1[game.stirDeck1.size - 1]))
         }
         else {
-            stir1IV.setImageResource(ImageConverter.getImage(Card(0,false)))
+            stir1IV.setImageResource(ImageConverter.getEmptyDeckImage())
         }
         if(game.stirDeck2.isNotEmpty()) {
             stir2IV.setImageResource(ImageConverter.getImage(game.stirDeck2[game.stirDeck2.size - 1]))
         }
         else {
-            stir2IV.setImageResource(ImageConverter.getImage(Card(0,false)))
+            stir2IV.setImageResource(ImageConverter.getEmptyDeckImage())
         }
+    }
+
+    private fun setPlayerView(index: Int, username: String = "Empty", isVisible: Int = View.INVISIBLE) {
+        views[index].visibility = isVisible
+        names[index].text = username
+        val typedValue = TypedValue()
+        theme.resolveAttribute(R.attr.InlineColor, typedValue, true)
+        val color = ContextCompat.getColor(this, typedValue.resourceId)
+        names[index].setTextColor(color)
+        namesHighlighters[index].text = username
     }
 
     fun changeVisibilityPlayersNicknames(view: View) {
         for (i in 0 until 5) {
-            if(nicknamesVisibility)
+            if(nicknamesVisibility) {
                 names[i].visibility = View.VISIBLE
-            else
+                namesHighlighters[i].visibility = View.VISIBLE
+            }
+            else {
                 names[i].visibility = View.INVISIBLE
+                namesHighlighters[i].visibility = View.INVISIBLE
+            }
         }
         if(nicknamesVisibility)
             hintCardTV.visibility = View.VISIBLE

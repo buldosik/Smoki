@@ -6,7 +6,7 @@ import com.example.projectam.utils.Game
 class ClientInfo {
     companion object {
         var username: String = ""
-        var id: Int = -1
+        var id: Int = -5
         var gameCode: String = ""
         var isSoundActive: Boolean = true
         var game: Game = Game()
@@ -14,7 +14,7 @@ class ClientInfo {
         const val gameSize: Int = 5
 
         fun init() {
-            id = -1
+            id = -5
             game = Game()
             chosenCard = Card(-10, false)
         }

@@ -6,6 +6,7 @@ import android.util.TypedValue
 import android.widget.Toast
 import com.example.projectam.ClientInfo
 import com.example.projectam.R
+import com.example.projectam.utils.Card
 import com.example.projectam.utils.GameManager
 import com.example.projectam.utils.ImageConverter
 
@@ -36,7 +37,7 @@ class ChoosingDeck : GameState {
                     ctx.stir1IV.setImageResource(ImageConverter.getImage(ClientInfo.game.stirDeck1[ClientInfo.game.stirDeck1.size - 1]))
                 }
                 else {
-                    ctx.stir1IV.setImageResource(R.drawable.close_image_vert)
+                    ctx.stir1IV.setImageResource(ImageConverter.getEmptyDeckImage())
                 }
             }
         }
@@ -54,15 +55,17 @@ class ChoosingDeck : GameState {
                     ctx.stir2IV.setImageResource(ImageConverter.getImage(ClientInfo.game.stirDeck2[ClientInfo.game.stirDeck2.size - 1]))
                 }
                 else {
-                    ctx.stir2IV.setImageResource(R.drawable.close_image_vert)
+                    ctx.stir2IV.setImageResource(ImageConverter.getEmptyDeckImage())
                 }
             }
         }
     }
     override fun setHighlighters(ctx: GameStateContext) {
         ctx.deckHighlighter.setBackgroundResource(R.drawable.highlight_border)
-        ctx.stir1Highlighter.setBackgroundResource(R.drawable.highlight_border)
-        ctx.stir2Highlighter.setBackgroundResource(R.drawable.highlight_border)
+        if (ClientInfo.game.stirDeck1.isNotEmpty())
+            ctx.stir1Highlighter.setBackgroundResource(R.drawable.highlight_border)
+        if (ClientInfo.game.stirDeck2.isNotEmpty())
+            ctx.stir2Highlighter.setBackgroundResource(R.drawable.highlight_border)
     }
 
     override fun callSound(ctx: GameStateContext) {
