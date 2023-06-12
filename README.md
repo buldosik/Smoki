@@ -14,7 +14,7 @@ Choose the language below to view the rules of the Dragons board game:
 
 ## Example Playing Field
 
-![Example Playing Field](https://github.com/buldosik/Smoki/assets/60583195/979efb66-f8c5-482f-a36e-07f8bfef33ed)
+![Example Playing Field](https://github.com/buldosik/Smoki/assets/60583195/48aa42fa-5476-4054-b91b-bf94d2f5e38b)
 
 ## Getting Started
 
